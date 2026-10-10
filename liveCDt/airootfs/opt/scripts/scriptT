@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+# Limpa o terminal para uma apresentação limpa
+clear
+
+echo "           SISTEMA DE REGISTO DE ESTUDANTE          "
+echo "           Bem vindo.                               "
+
+# Solicitar informacoes 
+read -p "Digite o seu nome completo: " NOME
+read -p "Digite o seu curso: " CURSO
+read -p "Digite o seu código de estudante: " CODIGO"
+echo""
+echo "               CONFIRMAÇÃO DOS DADOS               "
+echo "==================================================="
+echo " Nome:                $NOME"
+echo " Curso:               $CURSO"
+echo " Código de Estudante: $CODIGO"
+echo "==================================================="
+echo ""
+
+# Opção para guardar em ficheiro
+read -p "Deseja guardar estes dados num ficheiro de texto? (s/n): " RESPOSTA
+
+if [[ "$RESPOSTA" =~ ^[Ss]$ ]]; then
+    echo "Nome: $NOME" > dados_estudante.txt
+    echo "Curso: $CURSO" >> dados_estudante.txt
+    echo "Código: $CODIGO" >> dados_estudante.txt
+    echo ""
+    echo "[INFO] Dados guardados em 'dados_estudante.txt'!"
+fi
+
+echo ""
+read -p "Pressione [Enter] para sair..."

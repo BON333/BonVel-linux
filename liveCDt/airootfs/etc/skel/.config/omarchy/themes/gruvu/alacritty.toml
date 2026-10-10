@@ -1,0 +1,40 @@
+
+[colors]
+
+# Primary colors
+[colors.primary]
+background = "0x1d2021"
+foreground = "0xd4be98"
+
+# Cursor colors
+[colors.cursor]
+text = "0x1d2021"
+cursor = "0xa89984"
+
+# Selection colors
+[colors.selection]
+text = "0x1d2021"
+background = "0xd4be98"
+
+# Normal colors (color0–color7)
+[colors.normal]
+black   = "0x665c54" # color0
+red     = "0xea6962" # color1
+green   = "0xa9b665" # color2
+yellow  = "0xe78a4e" # color3
+blue    = "0x7daea3" # color4
+magenta = "0xd3869b" # color5
+cyan    = "0x89b482" # color6
+white   = "0xd4be98" # color7
+
+# Bright colors (color8–color15)
+[colors.bright]
+black   = "0x928374" # color8
+red     = "0xea6962" # color9
+green   = "0xa9b665" # color10
+yellow  = "0xd8a657" # color11
+blue    = "0x7daea3" # color12
+magenta = "0xd3869b" # color13
+cyan    = "0x89b482" # color14
+white   = "0xd4be98" # color15
+

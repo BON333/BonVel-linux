@@ -1,0 +1,33 @@
+# Core UI colors
+accent = "#83A598"                 # Gruvbox blue as primary accent
+cursor = "#D5C4A1"                 # Cursor color
+foreground = "#D5C4A1"             # Primary text color
+background = "#1D2021"             # Gruvbox Dark Hard background
+
+selection_foreground = "#D5C4A1"   # Selected text
+selection_background = "#665C54"   # Selection background
+
+# --------------------------------------------------
+# Base16-aligned 16-color palette (Gruvbox Dark Hard)
+# --------------------------------------------------
+
+# base00–base07 (normal)
+color0  = "#1D2021"  # base00 - Deep background
+color1  = "#CC241D"  # base08 - Error / critical
+color2  = "#B8BB26"  # base0B - Success / positive
+color3  = "#D79921"  # base0A - Warning / attention
+color4  = "#83A598"  # base0D - Primary accent
+color5  = "#D3869B"  # base0E - Secondary accent
+color6  = "#8EC07C"  # base0C - Informational
+color7  = "#D5C4A1"  # base05 - Default foreground
+
+# base08–base0F (bright)
+color8  = "#665C54"  # base03 - Dim / inactive
+color9  = "#CC241D"  # base08 - Bright error
+color10 = "#B8BB26"  # base0B - Bright success
+color11 = "#D79921"  # base0A - Bright warning
+color12 = "#83A598"  # base0D - Bright accent
+color13 = "#D3869B"  # base0E - Bright secondary
+color14 = "#B8BB26"  # base0C - Bright info (as provided)
+color15 = "#EBDBB2"  # base07 - Highest-contrast text
+

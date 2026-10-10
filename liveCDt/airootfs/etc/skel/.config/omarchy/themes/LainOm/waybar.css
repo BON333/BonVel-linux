@@ -1,0 +1,127 @@
+* {
+    font-family: "CaskaydiaMono Nerd Font";
+    font-size: 13px;
+    color: #ffeef7;
+    background: transparent;
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+
+window#waybar {
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a0a1a 100%);
+    border-bottom: 2px solid #e91e63;
+    opacity: 0.95;
+    box-shadow: 0 2px 10px rgba(233, 30, 99, 0.3);
+}
+
+/* Workspaces */
+#workspaces {
+    background: transparent;
+    margin: 4px 8px;
+}
+
+#workspaces button {
+    background: rgba(255, 238, 247, 0.1);
+    color: #ffeef7;
+    padding: 4px 12px;
+    margin: 0 2px;
+    border-radius: 8px;
+    border: 1px solid rgba(233, 30, 99, 0.3);
+    transition: all 0.3s ease;
+}
+
+#workspaces button.active {
+    background: linear-gradient(135deg, #e91e63, #ff4081);
+    color: #ffffff;
+    border: 1px solid #ff4081;
+    box-shadow: 0 0 15px rgba(233, 30, 99, 0.6);
+}
+
+#workspaces button:hover {
+    background: rgba(233, 30, 99, 0.2);
+    border: 1px solid #ff4081;
+}
+
+/* Moduli principali */
+#clock {
+    background: linear-gradient(135deg, #2a1a2a, #1a1a1a);
+    border: 1px solid #e91e63;
+    border-radius: 10px;
+    padding: 4px 16px;
+    margin: 4px 4px;
+    color: #ff99cc;
+    font-weight: bold;
+    box-shadow: 0 0 10px rgba(233, 30, 99, 0.3);
+}
+
+#battery, #network, #pulseaudio, #backlight {
+    background: rgba(42, 26, 42, 0.8);
+    border: 1px solid rgba(233, 30, 99, 0.5);
+    border-radius: 8px;
+    padding: 4px 12px;
+    margin: 4px 2px;
+    color: #ffeef7;
+    transition: all 0.3s ease;
+}
+
+#battery:hover, #network:hover, #pulseaudio:hover, #backlight:hover {
+    background: rgba(233, 30, 99, 0.3);
+    box-shadow: 0 0 8px rgba(233, 30, 99, 0.5);
+}
+
+/* Stati speciali batteria */
+#battery.critical {
+    background: linear-gradient(135deg, #ff6b9d, #ff4081);
+    color: #ffffff;
+    animation: pulse 2s infinite;
+}
+
+#battery.warning {
+    background: linear-gradient(135deg, #ffb3d1, #ff99cc);
+    color: #1a1a1a;
+}
+
+#battery.charging {
+    background: linear-gradient(135deg, #ff85a2, #e91e63);
+    color: #ffffff;
+}
+
+/* Audio */
+#pulseaudio.muted {
+    background: rgba(66, 66, 66, 0.8);
+    color: #ffb3d1;
+}
+
+/* Animazioni */
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(233, 30, 99, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(233, 30, 99, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(233, 30, 99, 0); }
+}
+
+/* Tooltip */
+tooltip {
+    background: rgba(10, 10, 10, 0.95);
+    border: 1px solid #e91e63;
+    border-radius: 8px;
+    color: #ffeef7;
+    padding: 8px;
+}
+
+/* Tray */
+#tray {
+    background: rgba(26, 10, 26, 0.8);
+    border-radius: 8px;
+    margin: 4px;
+    padding: 4px 8px;
+}
+
+#tray > .passive {
+    opacity: 0.7;
+}
+
+#tray > .needs-attention {
+    color: #ff4081;
+    animation: pulse 1s infinite;
+}

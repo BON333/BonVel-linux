@@ -1,0 +1,30 @@
+{
+  "policies": {
+    "Homepage": {
+      "URL": "file:///usr/share/bonvel/homepage/index.html",
+      "Locked": false
+    },
+    "Bookmarks": [
+      {
+        "Title": "BlackArch Tools",
+        "URL": "https://blackarch.org/tools.html",
+        "Folder": "BonVel Security"
+      },
+      {
+        "Title": "Exploit Database",
+        "URL": "https://www.exploit-db.com/",
+        "Folder": "BonVel Security"
+      },
+      {
+        "Title": "ArchWiki",
+        "URL": "https://wiki.archlinux.org/",
+        "Folder": "Docs"
+      },
+      {
+        "Title": "Hyprland Docs",
+        "URL": "https://wiki.hyprland.org/",
+        "Folder": "Docs"
+      }
+    ]
+  }
+}

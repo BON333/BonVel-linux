@@ -1,0 +1,17 @@
+/* Walker CSS - Anime Pink Theme con Variabili */
+
+/* Definizione variabili colore anime pink */
+@define-color selected-text #DD1C5E;
+@define-color selected-bg #ff4081;
+@define-color text #ffeef7;
+@define-color base #1a0a1a;
+@define-color border #e91e63;
+@define-color foreground #ffeef7;
+@define-color background #0a0a0a;
+
+/* Variabili aggiuntive per contrasto massimo */
+@define-color accent #ff4081;
+@define-color accent-alt #e91e63;
+@define-color highlight #ffffff;
+@define-color shadow rgba(233, 30, 99, 0.5);
+

@@ -1,0 +1,56 @@
+# btop theme - Anime Pink
+# Tema per monitor di sistema basato sui colori anime rosa/magenta
+
+# Colori principali
+theme[main_bg]="#0a0a0a"                    # Sfondo nero profondo
+theme[main_fg]="#ffeef7"                    # Testo principale rosa chiaro
+theme[title]="#ff4081"                      # Titoli magenta brillante
+theme[hi_fg]="#ff99cc"                      # Evidenziazioni rosa
+theme[selected_bg]="#2a1a2a"               # Sfondo selezione
+theme[selected_fg]="#ffffff"               # Testo selezione
+theme[inactive_fg]="#686868"               # Testo inattivo
+theme[graph_text]="#ffb3e6"                # Testo nei grafici
+
+# Bordi e divisori
+theme[div_line]="#424242"                   # Linee divisorie
+theme[temp_start]="#ff6b9d"                # Inizio gradiente temperatura
+theme[temp_mid]="#e91e63"                  # Metà gradiente temperatura  
+theme[temp_end]="#d147a3"                  # Fine gradiente temperatura
+
+# CPU
+theme[cpu_box]="#e91e63"                   # Bordo box CPU
+theme[cpu_start]="#ff99cc"                 # Inizio gradiente CPU
+theme[cpu_mid]="#ff4081"                   # Metà gradiente CPU
+theme[cpu_end]="#e91e63"                   # Fine gradiente CPU
+
+# Memoria
+theme[mem_box]="#ff6b9d"                   # Bordo box memoria
+theme[free_start]="#1a1a1a"               # Memoria libera inizio
+theme[free_mid]="#424242"                  # Memoria libera metà
+theme[free_end]="#686868"                  # Memoria libera fine
+theme[cached_start]="#ff85a2"              # Cache inizio
+theme[cached_mid]="#ff6b9d"               # Cache metà
+theme[cached_end]="#e91e63"               # Cache fine
+theme[available_start]="#ffb3e6"          # Disponibile inizio
+theme[available_mid]="#ff99cc"            # Disponibile metà
+theme[available_end]="#ff85a2"            # Disponibile fine
+theme[used_start]="#ff4081"               # Usata inizio
+theme[used_mid]="#e91e63"                 # Usata metà
+theme[used_end]="#d147a3"                 # Usata fine
+
+# Rete
+theme[net_box]="#ff99cc"                  # Bordo box rete
+theme[download_start]="#ff85a2"           # Download inizio
+theme[download_mid]="#ff6b9d"             # Download metà
+theme[download_end]="#e91e63"             # Download fine
+theme[upload_start]="#ffb3e6"             # Upload inizio
+theme[upload_mid]="#ff99cc"               # Upload metà
+theme[upload_end]="#ff85a2"               # Upload fine
+
+# Processi
+theme[proc_box]="#d147a3"                 # Bordo box processi
+theme[proc_misc]="#ff99cc"                # Elementi vari processi
+
+# Dischi
+theme[disk_box]="#ff85a2"                 # Bordo box dischi
+theme

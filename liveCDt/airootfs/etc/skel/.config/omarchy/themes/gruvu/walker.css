@@ -1,0 +1,102 @@
+@define-color selected-text #fabd2f;
+@define-color text #ebdbb2;
+@define-color base #282828;
+@define-color border #ebdbb2;
+@define-color foreground #d4be98;
+@define-color background #1d2021;
+
+
+/* window { */
+/*   background: #131515; */
+/*   font-family: "JetBrainsMono Nerd Font Propo"; */
+/*   font-size: 12px; */
+/*   font-weight: 700; */
+/*   color: #d4be98; */
+/* } */
+
+/* ===== Outer frame ===== */
+window .box-wrapper {
+  background: #1d2021;
+  padding: 10px;
+  border: 3px solid #d7c7a3;        
+  border-radius: 8px;
+  margin: 0;
+}
+
+/* ===== Inner frame ===== */
+window .content {
+  border: 2px solid #d8a657;        /* inner gold */
+  padding: 4px;
+}
+
+/* ===== Search bar ===== */
+window .search-container {
+  background: #1f1f1f;
+  border: 2px solid #d7c7a3;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+window .input {
+  color: #d4be98;
+  padding: 3px;
+  font-weight: 700;
+}
+
+window .placeholder {
+  color: #d4be98;
+  opacity: 0.4;
+}
+
+/* ===== List items ===== */
+child {
+  background: transparent;
+  padding: 2px;
+  margin: 0;
+  border: none;
+}
+
+/* ===== Hover ===== */
+child:hover {
+  background: #2a2a2a;
+}
+
+/* ===== Selected item ===== */
+child:selected {
+  background: #86a799;              /* yellow highlight */
+  border-radius : 8px;
+}
+
+/* ===== Icon ===== */
+child image {
+  margin-right: 10px;
+}
+
+/* ===== App name ===== */
+child label {
+  color: #ea6962;                   /* red app name */
+  font-weight: 800;
+}
+
+/* ===== Category text ===== */
+child label.secondary {
+  color: #d4be98;
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* ===== Selected text colors ===== */
+child:selected label {
+  color: #a9a665;
+}
+
+child:selected label.secondary {
+  color: #1f1f1f;
+}
+
+/* Slimmer selection bar */
+child:selected {
+  padding-top: 1px;
+  padding-bottom: 1px;
+}
+

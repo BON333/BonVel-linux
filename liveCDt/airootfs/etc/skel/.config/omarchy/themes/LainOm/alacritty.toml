@@ -1,0 +1,40 @@
+[colors.primary]
+background = "#0a0a0a"       # Nero profondo come lo sfondo
+foreground = "#ffeef7"       # Rosa molto chiaro per il testo
+
+[colors.normal]
+black = "#1a1a1a"           # Nero leggermente più chiaro
+red = "#ff6b9d"             # Rosa vibrante per errori
+green = "#ff85a2"           # Rosa-verde per successi
+yellow = "#ffb3d1"          # Rosa chiaro per warning
+blue = "#d147a3"            # Magenta più scuro
+magenta = "#e91e63"         # Rosa magenta principale (dal personaggio)
+cyan = "#ff99cc"            # Rosa ciano
+white = "#ffeef7"           # Bianco rosato
+
+[colors.bright]
+black = "#424242"           # Grigio scuro
+red = "#ff8fab"             # Rosa brillante
+green = "#ffa8c5"           # Verde rosato brillante
+yellow = "#ffc4e1"          # Giallo rosato brillante
+blue = "#e668b3"            # Blu magenta brillante
+magenta = "#ff4081"         # Magenta brillante (accent principale)
+cyan = "#ffb3e6"            # Ciano rosato brillante
+white = "#ffffff"           # Bianco puro
+
+[window]
+opacity = 0.92              # Leggermente trasparente per effetto depth
+padding = { x = 12, y = 12 }
+
+[font]
+normal = { family = "CaskaydiaMono Nerd Font", style = "Regular" }
+bold = { family = "CaskaydiaMono Nerd Font", style = "Bold" }
+italic = { family = "CaskaydiaMono Nerd Font", style = "Italic" }
+size = 9
+
+[cursor]
+style = { shape = "Block", blinking = "On" }
+blink_interval = 750
+
+[scrolling]
+history = 10000

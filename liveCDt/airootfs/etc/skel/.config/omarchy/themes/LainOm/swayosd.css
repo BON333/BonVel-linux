@@ -1,0 +1,103 @@
+/* SwayOSD CSS - Anime Pink Theme */
+
+/* Finestra principale */
+window {
+    background: linear-gradient(135deg, 
+        rgba(10, 10, 10, 0.95) 0%, 
+        rgba(26, 10, 26, 0.95) 50%, 
+        rgba(42, 26, 42, 0.95) 100%);
+    border: 2px solid #e91e63;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    padding: 24px;
+    margin: 20px;
+    min-width: 280px;
+    min-height: 120px;
+}
+
+/* Container principale */
+box {
+    background: transparent;
+    padding: 0;
+    margin: 16px;
+}
+
+/* Icona */
+image {
+    color: #ff4081;
+    background: rgba(255, 64, 129, 0.1);
+    border-radius: 50%;
+    padding: 12px;
+    margin-right: 16px;
+    min-width: 48px;
+    min-height: 48px;
+}
+
+/* Label del titolo */
+label {
+    color: #ffeef7;
+    font-family: "CaskaydiaMono Nerd Font";
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+/* Label del valore */
+.value {
+    color: #ff99cc;
+    font-family: "CaskaydiaMono Nerd Font";
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+/* Progressbar container */
+progressbar {
+    background: rgba(26, 26, 26, 0.8);
+    border: 1px solid rgba(233, 30, 99, 0.3);
+    border-radius: 12px;
+    min-height: 12px;
+    min-width: 200px;
+}
+
+progressbar progress {
+    background: linear-gradient(90deg, #ff99cc 0%, #e91e63 100%);
+    border-radius: 12px;
+    min-height: 12px;
+}
+
+/* Stati specifici per volume */
+window.volume {
+    border-color: #e91e63;
+}
+
+window.volume image {
+    color: #e91e63;
+    background: rgba(233, 30, 99, 0.1);
+}
+
+/* Stati specifici per luminosità */
+window.brightness {
+    border-color: #ff99cc;
+}
+
+window.brightness image {
+    color: #ff99cc;
+    background: rgba(255, 153, 204, 0.1);
+}
+
+/* Stato mute */
+window.muted {
+    border-color: #686868;
+    opacity: 0.7;
+}
+
+window.muted image {
+    color: #686868;
+    background: rgba(104, 104, 104, 0.1);
+}
+
+/* Hover della finestra */
+window:hover {
+    transform: translateY(-2px);
+}

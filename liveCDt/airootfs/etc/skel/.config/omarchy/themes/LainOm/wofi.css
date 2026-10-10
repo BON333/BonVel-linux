@@ -1,0 +1,215 @@
+/* Wofi CSS - Anime Pink Theme */
+/* Launcher legacy con stile anime rosa/magenta */
+
+* {
+    font-family: "CaskaydiaMono Nerd Font";
+    color: #ffeef7;
+    background: transparent;
+    margin: 0;
+    padding: 0;
+    outline: none;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+/* Finestra principale */
+#window {
+    background: linear-gradient(135deg, 
+        rgba(10, 10, 10, 0.95) 0%, 
+        rgba(26, 10, 26, 0.95) 50%, 
+        rgba(10, 10, 10, 0.95) 100%);
+    border: 2px solid #e91e63;
+    border-radius: 16px;
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.5),
+        0 0 30px rgba(233, 30, 99, 0.3);
+    padding: 16px;
+    margin: 20px;
+}
+
+/* Campo di input */
+#input {
+    background: linear-gradient(135deg, 
+        rgba(26, 26, 26, 0.8) 0%, 
+        rgba(42, 26, 42, 0.8) 100%);
+    color: #ffeef7;
+    border: 2px solid rgba(233, 30, 99, 0.5);
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    font-weight: 500;
+    caret-color: #ff4081;
+}
+
+#input:focus {
+    border-color: #ff4081;
+    box-shadow: 
+        0 4px 16px rgba(233, 30, 99, 0.4),
+        0 0 20px rgba(255, 64, 129, 0.3);
+}
+
+#input placeholder {
+    color: rgba(255, 238, 247, 0.5);
+    font-style: italic;
+}
+
+/* Lista delle opzioni */
+#outer-box {
+    background: transparent;
+    border-radius: 8px;
+}
+
+#scroll {
+    background: transparent;
+}
+
+/* Elementi della lista */
+#entry {
+    background: transparent;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin: 2px 0;
+    border: 1px solid transparent;
+    min-height: 40px;
+}
+
+#entry:hover {
+    background: linear-gradient(135deg, 
+        rgba(233, 30, 99, 0.2) 0%, 
+        rgba(255, 64, 129, 0.2) 100%);
+    border: 1px solid rgba(255, 64, 129, 0.6);
+    transform: translateX(4px);
+    box-shadow: 
+        0 4px 12px rgba(233, 30, 99, 0.4),
+        0 0 15px rgba(255, 64, 129, 0.3);
+}
+
+#entry:selected {
+    background: linear-gradient(135deg, 
+        rgba(233, 30, 99, 0.2) 0%, 
+        rgba(255, 64, 129, 0.2) 100%);
+    border: 1px solid #e91e63;
+    color: #ffffff;
+    transform: translateX(8px);
+    box-shadow: 
+        0 6px 16px rgba(233, 30, 99, 0.3),
+        0 0 20px rgba(255, 64, 129, 0.2);
+}
+
+/* Icone */
+#img {
+    margin-right: 12px;
+    padding: 4px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+#entry:selected #img {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.1);
+}
+
+/* Testo */
+#text {
+    font-size: 13px;
+    font-weight: 500;
+    color: #ffeef7;
+    vertical-align: middle;
+}
+
+#entry:selected #text {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+/* Scrollbar */
+scrollbar {
+    background: rgba(26, 26, 26, 0.3);
+    border-radius: 4px;
+}
+
+scrollbar slider {
+    background: rgba(233, 30, 99, 0.6);
+    border-radius: 4px;
+    min-height: 20px;
+}
+
+scrollbar slider:hover {
+    background: rgba(255, 64, 129, 0.8);
+}
+
+/* Stato vuoto */
+#no-matches {
+    color: rgba(255, 238, 247, 0.5);
+    text-align: center;
+    padding: 40px 20px;
+    font-style: italic;
+}
+
+/* Effetti speciali */
+#entry[app_type="terminal"] {
+    border-left: 3px solid transparent;
+}
+
+#entry[app_type="terminal"]:hover,
+#entry[app_type="terminal"]:selected {
+    border-left: 3px solid #ff4081;
+}
+
+#entry[app_type="browser"] {
+    border-left: 3px solid transparent;
+}
+
+#entry[app_type="browser"]:hover,
+#entry[app_type="browser"]:selected {
+    border-left: 3px solid #ff6b9d;
+}
+
+#entry[app_type="editor"] {
+    border-left: 3px solid transparent;
+}
+
+#entry[app_type="editor"]:hover,
+#entry[app_type="editor"]:selected {
+    border-left: 3px solid #ff99cc;
+}
+
+/* Modalità dmenu */
+#dmenu {
+    background: transparent;
+}
+
+#dmenu #entry {
+    padding: 8px 12px;
+    font-size: 12px;
+}
+
+/* Modalità drun (applicazioni) */
+#drun {
+    background: transparent;
+}
+
+#drun #entry {
+    padding: 10px 14px;
+}
+
+/* Modalità run (comandi) */
+#run {
+    background: transparent;
+}
+
+#run #entry {
+    padding: 8px 12px;
+    font-family: "CaskaydiaMono Nerd Font", monospace;
+}
+
+/* Tooltip */
+tooltip {
+    background: rgba(10, 10, 10, 0.95);
+    border: 1px solid #e91e63;
+    border-radius: 8px;
+    color: #ffeef7;
+    padding: 8px;
+    font-size: 11px;
+}

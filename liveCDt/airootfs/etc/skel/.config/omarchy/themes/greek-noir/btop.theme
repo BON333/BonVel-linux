@@ -1,0 +1,70 @@
+# Main background
+theme[main_bg]="#171717"
+
+# Main text color
+theme[main_fg]="#ACABA9"
+
+# Title color for boxes
+theme[title]="#F25623"
+
+# Highlight color for keyboard shortcuts
+theme[hi_fg]="#F56E0F"
+
+# Background color of selected item in processes box
+theme[selected_bg]="#F25623"
+
+# Foreground color of selected item in processes box
+theme[selected_fg]="#171717"
+
+# Color of inactive/disabled text
+theme[inactive_fg]="#4D4D4D"
+
+# Misc colors for processes box
+theme[proc_misc]="#F25623"
+
+# Box outline and divider line color
+theme[cpu_box]="#4D4D4D"
+theme[mem_box]="#4D4D4D"
+theme[net_box]="#4D4D4D"
+theme[proc_box]="#4D4D4D"
+theme[div_line]="#333333"
+
+# Temperature gradient
+theme[temp_start]="#757d75"
+theme[temp_mid]="#8A8A8A"
+theme[temp_end]="#F25623"
+
+# CPU gradient
+theme[cpu_start]="#757d75"
+theme[cpu_mid]="#F56E0F"
+theme[cpu_end]="#F25623"
+
+# Free memory
+theme[free_start]="#757d75"
+theme[free_mid]="#aeab94"
+theme[free_end]="#bcbfbc"
+
+# Cached memory
+theme[cached_start]="#757d75"
+theme[cached_mid]="#aeab94"
+theme[cached_end]="#bcbfbc"
+
+# Available memory
+theme[available_start]="#757d75"
+theme[available_mid]="#aeab94"
+theme[available_end]="#bcbfbc"
+
+# Used memory
+theme[used_start]="#757d75"
+theme[used_mid]="#F56E0F"
+theme[used_end]="#F25623"
+
+# Network download
+theme[download_start]="#757d75"
+theme[download_mid]="#aeab94"
+theme[download_end]="#bcbfbc"
+
+# Network upload
+theme[upload_start]="#757d75"
+theme[upload_mid]="#F56E0F"
+theme[upload_end]="#F25623"
