@@ -1,0 +1,46 @@
+# Tema GRUB do BonVel OS (arranque UEFI), igual ao menu do syslinux (BIOS)
+desktop-image: "splash.png"
+desktop-image-scale-method: "stretch"
+desktop-color: "#f2ede1"
+title-text: ""
+message-font: "Unifont Regular 16"
+message-color: "#202020"
+terminal-font: "Unifont Regular 16"
+
++ boot_menu {
+    left = 12%
+    top = 37%
+    width = 76%
+    height = 25%
+    item_font = "Unifont Regular 16"
+    item_color = "#e8e8e8"
+    selected_item_font = "Unifont Regular 16"
+    selected_item_color = "#101010"
+    item_height = 28
+    item_padding = 2
+    item_spacing = 2
+    menu_pixmap_style = "menu_*.png"
+    selected_item_pixmap_style = "select_*.png"
+    scrollbar = false
+}
+
++ label {
+    id = "__timeout__"
+    left = 12%
+    top = 63%
+    width = 76%
+    align = "center"
+    font = "Unifont Regular 16"
+    color = "#ffffff"
+    text = "Arranque automático em %d segundos"
+}
+
+# Faixa escura por baixo do menu, para a contagem ficar legível sobre a imagem
+# (o GRUB desenha-a antes da etiqueta acima, por isso vem depois no ficheiro)
++ image {
+    left = 12%
+    top = 62%
+    width = 76%
+    height = 5%
+    file = "timeout_bg.png"
+}
