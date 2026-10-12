@@ -1,0 +1,25 @@
+/* Menu do BonVel OS, com as cores do tema snow_black */
+window {
+  background-color: #000000;
+  border: 2px solid #999999;
+  border-radius: 8px;
+  font-family: "JetBrainsMono Nerd Font", monospace;
+}
+
+#input {
+  background-color: #101010;
+  color: #FFFFFF;
+  border: none;
+  margin: 8px;
+  padding: 6px;
+}
+
+#entry {
+  color: #C1C1C1;
+  padding: 4px 8px;
+}
+
+#entry:selected {
+  background-color: #333333;
+  color: #FFFFFF;
+}

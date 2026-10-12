@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2034
 
-iso_name="BonVel OS"
+iso_name="bonvel-os"
 iso_label="BV_$(date --date="@${SOURCE_DATE_EPOCH:-$(date +%s)}" +%Y%m)"
 iso_publisher="Hussein <https://github.com/BON333> & Mente-MiIionaria <https://github.com/Mente-MiIionaria>"
-iso_application="Arch Linux Live/Rescue DVD"
+iso_application="BonVel OS Live/Rescue DVD"
 iso_version="$(date --date="@${SOURCE_DATE_EPOCH:-$(date +%s)}" +%Y.%m.%d)"
 install_dir="arch"
 buildmodes=('iso')

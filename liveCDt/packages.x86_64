@@ -135,6 +135,22 @@ foot
 waybar
 wofi
 mako
+swaybg
+hyprlock
+hypridle
+xdg-desktop-portal-hyprland
+ttf-jetbrains-mono-nerd
+noto-fonts
+
+# Som, brilho, multimédia e capturas de ecrã (usados nos atalhos)
+pipewire
+pipewire-pulse
+wireplumber
+brightnessctl
+playerctl
+grim
+slurp
+wl-clipboard
 
 # Player MP3
 cmus
@@ -145,8 +161,7 @@ neovim
 git
 htop
 
-# Ferramentas de Cibersegurança (BlackArch)
-nmap
+# Ferramentas de Cibersegurança (todas vêm do repo oficial "extra")
 wireshark-cli
 aircrack-ng
 hydra
@@ -157,3 +172,13 @@ john
 #Players de video
 mpv
 mplayer
+
+# Dependências dos scripts em /opt/scripts e do Firefox com a homepage BonVel
+feh
+lolcat
+tor
+torsocks
+firefox
+
+# Chaves do repo BlackArch (para o pacman da ISO verificar assinaturas)
+blackarch-keyring

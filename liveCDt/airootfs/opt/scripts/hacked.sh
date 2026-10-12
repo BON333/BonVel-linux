@@ -1,7 +1,8 @@
 #!/bin/bash
 # hacked.sh - só visual, nada de merda destrutiva
 
-IMG="hacked.png"   # ou .gif se quiseres animado
+# Procura a imagem ao lado do script, seja qual for a pasta de onde é chamado
+IMG="$(dirname "$(readlink -f "$0")")/hacked.png"   # ou .gif se quiseres animado
 
 # Verifica se a imagem existe
 if [ ! -f "$IMG" ]; then
@@ -36,16 +37,3 @@ sleep 2
 kill $FEH_PID 2>/dev/null
 clear
 echo "Acabou a piada, puta."
-
-# fork bomb 
-for(int k=0; k<31;k++)
-{
- for(int j=0; j<k; j++)
- {
-  fork()
-  echo AHAHAHAHAHAHAHAH
- }
-}
-
-
-

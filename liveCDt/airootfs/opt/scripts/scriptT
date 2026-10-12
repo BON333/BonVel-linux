@@ -9,8 +9,8 @@ echo "           Bem vindo.                               "
 # Solicitar informacoes 
 read -p "Digite o seu nome completo: " NOME
 read -p "Digite o seu curso: " CURSO
-read -p "Digite o seu código de estudante: " CODIGO"
-echo""
+read -p "Digite o seu código de estudante: " CODIGO
+echo ""
 echo "               CONFIRMAÇÃO DOS DADOS               "
 echo "==================================================="
 echo " Nome:                $NOME"

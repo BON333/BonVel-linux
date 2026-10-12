@@ -35,6 +35,11 @@ cat << 'EOF'
 EOF
 echo -e "${NC}"
 
-mpv --really-quiet --volume=200  ~/scripts/media/I_REGRET_NOTHING.mp4
-echo boom 
-reboot
+DIR="$(dirname "$(readlink -f "$0")")"
+mpv --really-quiet --volume=200 "$DIR/media/I_REGRET_NOTHING.mp4"
+echo boom
+
+read -r -p "Reiniciar o sistema agora? (s/N): " RESPOSTA
+if [[ "$RESPOSTA" =~ ^[Ss]$ ]]; then
+    reboot
+fi

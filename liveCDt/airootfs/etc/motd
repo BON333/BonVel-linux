@@ -1,5 +1,6 @@
-To install [38;2;23;147;209mArch Linux[0m follow the installation guide:
-https://wiki.archlinux.org/title/Installation_guide
+Bem-vindo ao [38;2;137;180;250mBonVel OS[0m (baseado em Arch Linux).
+Para instalar: corre [35marchinstall[0m e depois [35m/opt/scripts/post_install.sh[0m antes de reiniciar.
+Guia do Arch: https://wiki.archlinux.org/title/Installation_guide
 
 For Wi-Fi, authenticate to the wireless network using the [35miwctl[0m utility.
 For mobile broadband (WWAN) modems, connect with the [35mmmcli[0m utility.

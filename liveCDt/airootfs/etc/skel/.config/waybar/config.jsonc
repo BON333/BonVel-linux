@@ -1,0 +1,53 @@
+// Barra do BonVel OS (baseada na snowbar do tema snow_black, sem dependências do Omarchy)
+{
+  "layer": "top",
+  "position": "top",
+  "margin-top": 2,
+  "modules-left": ["clock", "hyprland/workspaces"],
+  "modules-center": ["hyprland/window"],
+  "modules-right": ["cpu", "memory", "pulseaudio", "network", "battery", "tray"],
+
+  "clock": {
+    "interval": 60,
+    "format": "{:L%A %H:%M}",
+    "format-alt": "{:L%d %B %Y}",
+    "tooltip": false
+  },
+  "hyprland/workspaces": {
+    "format": "{name}",
+    "persistent-workspaces": { "*": 5 }
+  },
+  "hyprland/window": {
+    "max-length": 60
+  },
+  "cpu": {
+    "interval": 5,
+    "format": "CPU {usage}%",
+    "on-click": "foot htop"
+  },
+  "memory": {
+    "interval": 10,
+    "format": "RAM {percentage}%"
+  },
+  "pulseaudio": {
+    "format": "VOL {volume}%",
+    "format-muted": "VOL mudo",
+    "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+    "scroll-step": 5
+  },
+  "network": {
+    "format-wifi": "WIFI {essid}",
+    "format-ethernet": "ETH {ipaddr}",
+    "format-disconnected": "sem rede",
+    "tooltip-format": "{ifname} {ipaddr}/{cidr}",
+    "on-click": "foot iwctl"
+  },
+  "battery": {
+    "format": "BAT {capacity}%",
+    "format-charging": "BAT {capacity}% +",
+    "states": { "warning": 20, "critical": 10 }
+  },
+  "tray": {
+    "spacing": 8
+  }
+}

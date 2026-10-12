@@ -1,0 +1,45 @@
+/* Cores do tema snow_black */
+@define-color background #000000;
+@define-color foreground #ffffff;
+@define-color dim #888888;
+@define-color warning #A06666;
+
+* {
+  font-family: "JetBrainsMono Nerd Font", monospace;
+  font-size: 13px;
+  border: none;
+  border-radius: 0;
+  min-height: 0;
+}
+
+window#waybar {
+  background: @background;
+  color: @foreground;
+}
+
+#workspaces button {
+  color: @dim;
+  padding: 0 6px;
+}
+
+#workspaces button.active {
+  color: @foreground;
+}
+
+#clock,
+#window,
+#cpu,
+#memory,
+#pulseaudio,
+#network,
+#battery,
+#tray {
+  padding: 0 10px;
+}
+
+#battery.warning,
+#battery.critical,
+#network.disconnected,
+#pulseaudio.muted {
+  color: @warning;
+}
