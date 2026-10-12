@@ -31,7 +31,8 @@ if [ -d "$WORK" ]; then
 fi
 
 mkdir -p "$OUT"
-sudo mkarchiso -v -w "$WORK" -o "$OUT" "$PERFIL"
+# O mkarchiso pergunta ao pacman (fornecedores, confirmação): responde sempre o valor por omissão
+yes "" | sudo mkarchiso -v -w "$WORK" -o "$OUT" "$PERFIL"
 
 echo "==> ISO pronta:"
 ls -t "$OUT"/*.iso | head -1

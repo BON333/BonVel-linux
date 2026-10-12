@@ -12,6 +12,8 @@ Num Arch Linux com `archiso` instalado:
 ```bash
 tools/build.sh          # ISO em ~/iso_out
 tools/runSystem.sh      # testa a ISO mais recente no QEMU (UEFI)
+tools/test-iso.py       # teste automático: arranca a ISO sem janela, verifica serviços,
+                        # scripts, temas e Hyprland, e tira capturas de ecrã
 ```
 
 O `build.sh` assina a chave do repositório BlackArch na primeira vez, porque o `pacman.conf` exige assinaturas válidas.

@@ -1,0 +1,11 @@
+NAME="BonVel OS"
+PRETTY_NAME="BonVel OS"
+ID=arch
+ID_LIKE=arch
+BUILD_ID=rolling
+ANSI_COLOR="38;2;137;180;250"
+HOME_URL="https://github.com/BON333/BonVel-linux"
+DOCUMENTATION_URL="https://wiki.archlinux.org/"
+SUPPORT_URL="https://github.com/BON333/BonVel-linux/issues"
+BUG_REPORT_URL="https://github.com/BON333/BonVel-linux/issues"
+LOGO=archlinux-logo

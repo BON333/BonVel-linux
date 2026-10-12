@@ -17,6 +17,7 @@ noto-fonts
 # Som, brilho, multimédia e capturas de ecrã
 pipewire
 pipewire-pulse
+pipewire-jack
 wireplumber
 brightnessctl
 playerctl
