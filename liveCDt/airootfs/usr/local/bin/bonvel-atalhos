@@ -1,0 +1,14 @@
+#!/bin/bash
+# Mostra os atalhos do Hyprland (os que têm descrição) num menu pesquisável.
+
+hyprctl binds -j | python3 -c '
+import json, sys
+mods = {1: "SHIFT", 4: "CTRL", 8: "ALT", 64: "SUPER"}
+for b in json.load(sys.stdin):
+    if not b.get("has_description"):
+        continue
+    m = b["modmask"]
+    tecla = " + ".join([n for v, n in sorted(mods.items(), key=lambda x: -x[0]) if m & v] + [b["key"]])
+    desc = b["description"]
+    print(f"{tecla:<28} {desc}")
+' | wofi --dmenu --prompt "Atalhos" --width 700 --height 600 >/dev/null

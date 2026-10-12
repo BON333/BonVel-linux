@@ -151,6 +151,7 @@ playerctl
 grim
 slurp
 wl-clipboard
+libnotify
 
 # Player MP3
 cmus

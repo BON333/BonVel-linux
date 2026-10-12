@@ -1,0 +1,46 @@
+#!/bin/bash
+# Troca o tema do BonVel OS (substitui o seletor de temas do Omarchy).
+# Uso: bonvel-tema              -> escolher num menu (wofi)
+#      bonvel-tema <nome>       -> aplicar diretamente
+#      bonvel-tema --lista      -> listar os temas
+
+OMARCHY="$HOME/.config/omarchy"
+THEMES="$OMARCHY/themes"
+
+listar() {
+    find "$THEMES" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort
+}
+
+case "$1" in
+    --lista) listar; exit 0 ;;
+    "")      TEMA="$(listar | wofi --dmenu --prompt 'Tema')" ;;
+    *)       TEMA="$1" ;;
+esac
+
+[ -n "$TEMA" ] || exit 0
+
+if [ ! -d "$THEMES/$TEMA" ]; then
+    echo "Tema '$TEMA' não existe. Temas disponíveis:"
+    listar
+    exit 1
+fi
+
+# Aponta o tema atual para o escolhido
+ln -sfn "../themes/$TEMA" "$OMARCHY/current/theme"
+echo "$TEMA" > "$OMARCHY/current/theme.name"
+
+# Primeira imagem da pasta backgrounds como fundo
+FUNDO="$(find "$THEMES/$TEMA/backgrounds" -maxdepth 1 -type f 2>/dev/null | sort | head -1)"
+if [ -n "$FUNDO" ]; then
+    ln -sfn "theme/backgrounds/$(basename "$FUNDO")" "$OMARCHY/current/background"
+fi
+
+# Aplica sem reiniciar a sessão
+if [ -n "$HYPRLAND_INSTANCE_SIGNATURE" ]; then
+    hyprctl reload >/dev/null
+    pkill -x swaybg; setsid -f swaybg -i "$OMARCHY/current/background" -m fill >/dev/null 2>&1
+    makoctl reload 2>/dev/null
+    notify-send "BonVel OS" "Tema aplicado: $TEMA" 2>/dev/null
+fi
+
+echo "Tema aplicado: $TEMA"
