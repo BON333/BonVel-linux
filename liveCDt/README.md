@@ -21,7 +21,8 @@ O `build.sh` assina a chave do repositório BlackArch na primeira vez, porque o 
 No sistema ao vivo:
 
 1. `archinstall`
-2. Antes de reiniciar: `post_install` (copia os scripts, temas e configurações do BonVel para `/mnt`)
+2. Antes de reiniciar, com internet: `post_install` (instala os pacotes do BonVel no disco e copia os scripts, temas e configurações para `/mnt`)
+3. Reinicia e entra com o teu utilizador no tty1: o Hyprland arranca sozinho
 
 ## Atalhos principais
 

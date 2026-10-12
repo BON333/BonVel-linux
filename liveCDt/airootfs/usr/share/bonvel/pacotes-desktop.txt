@@ -1,0 +1,51 @@
+# Pacotes que o post_install instala no sistema em disco para ter o BonVel completo.
+# Mantém em sincronia com packages.x86_64 (o tools/build.sh avisa se faltar algum).
+
+# Ambiente gráfico
+hyprland
+foot
+waybar
+wofi
+mako
+swaybg
+hyprlock
+hypridle
+xdg-desktop-portal-hyprland
+ttf-jetbrains-mono-nerd
+noto-fonts
+
+# Som, brilho, multimédia e capturas de ecrã
+pipewire
+pipewire-pulse
+wireplumber
+brightnessctl
+playerctl
+grim
+slurp
+wl-clipboard
+libnotify
+
+# Aplicações e utilitários
+firefox
+cmus
+fastfetch
+neovim
+git
+htop
+tmux
+python
+mpv
+mplayer
+feh
+lolcat
+tor
+torsocks
+
+# Cibersegurança
+nmap
+wireshark-cli
+aircrack-ng
+hydra
+metasploit
+sqlmap
+john

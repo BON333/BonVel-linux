@@ -8,6 +8,14 @@ PERFIL="$(cd "$(dirname "$0")/.." && pwd)"
 WORK="$HOME/iso_work"
 OUT="$HOME/iso_out"
 
+# Os pacotes que o post_install instala no disco também têm de estar na ISO
+LISTA="$PERFIL/airootfs/usr/share/bonvel/pacotes-desktop.txt"
+for p in $(grep -vE '^\s*(#|$)' "$LISTA"); do
+    if ! grep -qx "$p" "$PERFIL/packages.x86_64"; then
+        echo "Aviso: '$p' está em pacotes-desktop.txt mas não em packages.x86_64"
+    fi
+done
+
 # O repo BlackArch exige assinaturas: a chave tem de estar assinada localmente
 CHAVE=F9A6E68A711354D84A9B91637533BAFE69A25079
 if ! pacman-key --list-sigs "$CHAVE" 2>/dev/null | grep -q 'Pacman Keyring Master Key'; then

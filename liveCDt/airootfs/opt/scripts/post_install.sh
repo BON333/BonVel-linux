@@ -13,11 +13,25 @@ if [ ! -d "$TARGET/etc" ]; then
     exit 1
 fi
 
+echo "==> A instalar os pacotes do BonVel OS em $TARGET (precisa de internet)..."
+grep -vE '^\s*(#|$)' /usr/share/bonvel/pacotes-desktop.txt \
+    | arch-chroot "$TARGET" pacman -S --needed --noconfirm -
+
 echo "==> A copiar ficheiros e configurações do BonVel OS para $TARGET..."
 
-# 1. Scripts e mídias
+# 1. Scripts, mídias e comandos do BonVel
 mkdir -p "$TARGET/opt/scripts"
 cp -a /opt/scripts/. "$TARGET/opt/scripts/"
+chmod 755 "$TARGET"/opt/scripts/*.sh "$TARGET/opt/scripts/scriptT"
+cp -a /usr/local/bin/bonvel-tema /usr/local/bin/bonvel-atalhos "$TARGET/usr/local/bin/"
+chmod 755 "$TARGET/usr/local/bin/bonvel-tema" "$TARGET/usr/local/bin/bonvel-atalhos"
+for s in hacked cktor fp IRN; do
+    ln -sfn "/opt/scripts/$s.sh" "$TARGET/usr/local/bin/$s"
+done
+ln -sfn /opt/scripts/scriptT "$TARGET/usr/local/bin/scriptT"
+
+# Hyprland arranca sozinho ao entrar no tty1
+cp -a /etc/profile.d/bonvel-hyprland.sh "$TARGET/etc/profile.d/"
 
 # 2. Configurações (Hyprland/Omarchy) para os utilizadores novos
 cp -a /etc/skel/. "$TARGET/etc/skel/"

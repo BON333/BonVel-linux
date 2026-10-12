@@ -161,6 +161,7 @@ fastfetch
 neovim
 git
 htop
+python
 
 # Ferramentas de Cibersegurança (todas vêm do repo oficial "extra")
 wireshark-cli
