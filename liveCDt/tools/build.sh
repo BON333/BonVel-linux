@@ -24,15 +24,19 @@ if ! pacman-key --list-sigs "$CHAVE" 2>/dev/null | grep -q 'Pacman Keyring Maste
     sudo pacman-key --lsign-key "$CHAVE"
 fi
 
-# Uma pasta de trabalho antiga faz o mkarchiso saltar passos e usar ficheiros velhos
-if [ -d "$WORK" ]; then
-    echo "==> A limpar $WORK..."
-    sudo rm -rf "$WORK"
-fi
-
 mkdir -p "$OUT"
-# O mkarchiso pergunta ao pacman (fornecedores, confirmação): responde sempre o valor por omissão
-yes "" | sudo mkarchiso -v -w "$WORK" -o "$OUT" "$PERFIL"
+# Até 3 tentativas (os mirrors às vezes param a meio). Uma pasta de trabalho antiga faria o
+# mkarchiso saltar passos e usar ficheiros velhos, por isso é sempre limpa antes.
+# O mkarchiso pergunta ao pacman (fornecedores, confirmação): responde sempre o valor por omissão.
+for tentativa in 1 2 3; do
+    sudo rm -rf "$WORK"
+    echo "==> mkarchiso (tentativa $tentativa)"
+    if yes "" | sudo mkarchiso -v -w "$WORK" -o "$OUT" "$PERFIL"; then
+        break
+    fi
+    [ "$tentativa" -lt 3 ] || exit 1
+    sleep 30
+done
 
 echo "==> ISO pronta:"
 ls -t "$OUT"/*.iso | head -1

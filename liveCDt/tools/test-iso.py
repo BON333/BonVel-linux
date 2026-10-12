@@ -40,11 +40,22 @@ params = re.search(r"^APPEND (.+)$", cfg, re.M).group(1)
 # Os sockets Unix têm limite de 108 bytes no caminho: ficam numa pasta curta
 SOCKS = tempfile.mkdtemp(prefix="bv-", dir="/tmp")
 INSTALAR = os.environ.get("BONVEL_INSTALL") == "1"
+SO_INSTALAR = os.environ.get("BONVEL_SO_INSTALAR") == "1"  # salta os testes do sistema ao vivo
+# Usa o post_install.sh do repositório em vez do que vem na ISO (testar sem recompilar)
+INJETAR = os.environ.get("BONVEL_INJETAR") == "1"
+SCRIPTS_LOCAIS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "airootfs", "opt", "scripts")
 disco = []
 if INSTALAR:
     subprocess.run(["qemu-img", "create", "-f", "qcow2", f"{OUT}/disco.qcow2", "30G"],
                    check=True, stdout=subprocess.DEVNULL)
-    disco = ["-drive", f"file={OUT}/disco.qcow2,if=virtio,format=qcow2"]
+    disco = ["-drive", f"file={OUT}/disco.qcow2,if=virtio,format=qcow2",
+             # Cache de pacotes do PC, só de leitura: evita descarregar GB pela rede lenta do QEMU
+             "-virtfs", "local,path=/var/cache/pacman/pkg,mount_tag=hostcache,security_model=none,readonly=on"]
+    if INJETAR:
+        disco += ["-virtfs", f"local,path={SCRIPTS_LOCAIS},mount_tag=bvscripts,security_model=none,readonly=on"]
+# Mirror do PC que constrói a ISO (a cache local corresponde às versões dele)
+MIRROR = next((l.split("=", 1)[1].strip() for l in open("/etc/pacman.d/mirrorlist")
+               if l.startswith("Server")), "https://geo.mirror.pkgbuild.com/$repo/os/$arch")
 serial_sock = f"{SOCKS}/serial"
 mon_sock = f"{SOCKS}/monitor"
 qemu = subprocess.Popen([
@@ -53,7 +64,7 @@ qemu = subprocess.Popen([
     "-append", f"{params} console=tty1 console=ttyS0,115200",
     "-cdrom", ISO, *disco,
     "-vga", "virtio", "-display", "none",
-    "-nic", "user,model=virtio-net-pci",
+    "-nic", "user,model=virtio-net-pci,ipv6=off",
     "-chardev", f"socket,id=s0,path={serial_sock},server=on,wait=off,logfile={OUT}/serial.log",
     "-serial", "chardev:s0",
     "-monitor", f"unix:{mon_sock},server,nowait",
@@ -140,7 +151,8 @@ try:
         ("waybar/mako/swaybg", "pgrep -l 'waybar|mako|swaybg'"),
         ("scripts executáveis", "ls -l /opt/scripts/ /usr/local/bin/ | grep -v total"),
         ("links dos comandos", "for c in hacked cktor fp IRN post_install scriptT bonvel-tema bonvel-atalhos; do command -v $c >/dev/null && test -x $(readlink -f $(command -v $c)) && echo \"ok $c\" || echo \"FALHA $c\"; done"),
-        ("config do root", "readlink /root/.config; ls /root/.config/"),
+        ("config do root", "test -L /root/.config && echo LINK || echo copia; ls /root/.config/"),
+        ("skel limpo", "ls -A /etc/skel/.config/; test -e /etc/skel/.config/dconf && echo SUJO || echo limpo"),
         ("tema atual", "readlink /root/.config/omarchy/current/theme /root/.config/omarchy/current/background; test -f /root/.config/omarchy/current/background && echo fundo-ok"),
         ("sintaxe dos scripts", "for f in /opt/scripts/*.sh /opt/scripts/scriptT /usr/local/bin/bonvel-*; do bash -n $f || echo ERRO $f; done; echo verificado"),
         ("lista de temas", "bonvel-tema --lista"),
@@ -157,6 +169,8 @@ try:
         ("cow_spacesize", "grep -o 'cow_spacesize=[^ ]*' /proc/cmdline"),
         ("tamanho", "df -h /run/archiso/airootfs / 2>/dev/null | tail -2"),
     ]
+    if SO_INSTALAR:
+        verificacoes = []
     with open(f"{OUT}/relatorio.txt", "w") as rel:
         for nome, c in verificacoes:
             try:
@@ -169,15 +183,23 @@ try:
 
     if INSTALAR:
         instalacao = [
+            ("cache e mirror do PC", "mkdir -p /hostcache && mount -t 9p -o trans=virtio,version=9p2000.L,ro hostcache /hostcache"
+                " && sed -i '/^\\[options\\]/a CacheDir = /hostcache/\\nCacheDir = /var/cache/pacman/pkg/\\nDisableDownloadTimeout' /etc/pacman.conf"
+                f" && echo 'Server = {MIRROR}' > /etc/pacman.d/mirrorlist && pacman -Sy >/dev/null && ls /hostcache | wc -l", 120),
             ("particionar e montar", "parted -s /dev/vda mklabel gpt mkpart root ext4 1MiB 100% && mkfs.ext4 -qF /dev/vda1 && mount /dev/vda1 /mnt && echo montado", 120),
-            ("pacstrap base", "pacstrap -K /mnt base >/tmp/pacstrap.log 2>&1; echo pacstrap=$?; tail -3 /tmp/pacstrap.log", 1800),
+            ("pacstrap base", "pacstrap -K -c /mnt base >/tmp/pacstrap.log 2>&1; echo pacstrap=$?; grep -iE 'error|erro|warn|space|failed' /tmp/pacstrap.log | head -20; tail -5 /tmp/pacstrap.log; df -h /mnt / /tmp", 1800),
             ("criar utilizador", "arch-chroot /mnt useradd -m -s /bin/bash teste && echo ok", 60),
-            ("post_install", "/opt/scripts/post_install.sh /mnt >/tmp/post.log 2>&1; echo post_install=$?; grep -E '==>|rro|warning' /tmp/post.log | tail -15", 3600),
+            ("cache no disco", "mkdir -p /mnt/hostcache && mount --bind /hostcache /mnt/hostcache"
+                " && sed -i '/^\\[options\\]/a CacheDir = /hostcache/\\nCacheDir = /var/cache/pacman/pkg/\\nDisableDownloadTimeout' /mnt/etc/pacman.conf && echo ok", 60),
+            *([("injetar post_install local", "mkdir -p /bvscripts && mount -t 9p -o trans=virtio,version=9p2000.L,ro bvscripts /bvscripts"
+                " && cp /bvscripts/post_install.sh /opt/scripts/post_install.sh && chmod 755 /opt/scripts/post_install.sh && grep -c adicionar_blackarch /opt/scripts/post_install.sh", 60)] if INJETAR else []),
+            ("post_install", "/opt/scripts/post_install.sh /mnt >/tmp/post.log 2>&1; echo post_install=$?; grep -E '==>|rro|warning|Aviso' /tmp/post.log | tail -15", 3600),
             ("pacotes no disco", "arch-chroot /mnt pacman -Q hyprland firefox metasploit 2>&1 | head; for p in $(grep -vE '^\\s*(#|$)' /usr/share/bonvel/pacotes-desktop.txt); do arch-chroot /mnt pacman -Q $p >/dev/null 2>&1 || echo FALTA $p; done; echo verificado", 300),
             ("scripts no disco", "ls -l /mnt/opt/scripts/ /mnt/usr/local/bin/ | grep -v total", 60),
             ("home do utilizador", "ls -la /mnt/home/teste/ /mnt/home/teste/.config/; stat -c '%U %n' /mnt/home/teste/.config/hypr /mnt/home/teste/.config/omarchy/current/theme; readlink /mnt/home/teste/.config/omarchy/current/theme", 60),
+            ("blackarch no disco", "grep -A2 '^\\[blackarch\\]' /mnt/etc/pacman.conf; echo pacotes_blackarch=$(arch-chroot /mnt pacman -Sl blackarch 2>/dev/null | wc -l)", 120),
             ("arranque automático", "cat /mnt/etc/profile.d/bonvel-hyprland.sh | tail -3", 60),
-            ("config Hyprland do utilizador", "arch-chroot /mnt su - teste -c 'Hyprland --verify-config 2>&1 | tail -1'", 120),
+            ("config Hyprland do utilizador", "arch-chroot /mnt su - teste -c 'XDG_RUNTIME_DIR=/tmp Hyprland --verify-config 2>&1 | tail -1'", 120),
             ("comandos do utilizador", "arch-chroot /mnt su - teste -c 'bonvel-tema --lista; for c in hacked cktor fp IRN scriptT bonvel-atalhos; do command -v $c >/dev/null && echo ok $c || echo FALHA $c; done'", 60),
         ]
         with open(f"{OUT}/relatorio.txt", "a") as rel:

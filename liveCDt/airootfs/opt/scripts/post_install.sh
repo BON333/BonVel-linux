@@ -45,8 +45,27 @@ cp -a /usr/lib/firefox/distribution/policies.json "$TARGET/usr/lib/firefox/distr
 for home in "$TARGET"/home/*/; do
     [ -d "$home" ] || continue
     user="$(basename "$home")"
-    cp -a --no-clobber /etc/skel/. "$home"
+    cp -a --update=none /etc/skel/. "$home"
     arch-chroot "$TARGET" chown -R "$user:" "/home/$user"
 done
+
+# 5. Repositório BlackArch (opcional: se falhar, o resto da instalação fica feito)
+adicionar_blackarch() {
+    local chave=F9A6E68A711354D84A9B91637533BAFE69A25079
+    # O arch-chroot monta um /tmp vazio, por isso a chave passa pelo /root do disco
+    pacman-key --export "$chave" > "$TARGET/root/blackarch.asc" &&
+    arch-chroot "$TARGET" pacman-key --add /root/blackarch.asc &&
+    arch-chroot "$TARGET" pacman-key --lsign-key "$chave" || return 1
+    rm -f "$TARGET/root/blackarch.asc"
+    if ! grep -q '^\[blackarch\]' "$TARGET/etc/pacman.conf"; then
+        printf '\n[blackarch]\nSigLevel = Required DatabaseOptional\nServer = https://blackarch.org/blackarch/$repo/os/$arch\n' >> "$TARGET/etc/pacman.conf"
+    fi
+    arch-chroot "$TARGET" pacman -Sy --needed --noconfirm blackarch-keyring
+}
+echo "==> A adicionar o repositório BlackArch a $TARGET..."
+if ! adicionar_blackarch; then
+    rm -f "$TARGET/root/blackarch.asc"
+    echo "Aviso: não foi possível configurar o BlackArch. O BonVel ficou instalado; tenta mais tarde com rede."
+fi
 
 echo "==> BonVel OS configurado com sucesso no disco!"
