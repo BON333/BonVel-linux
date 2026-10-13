@@ -219,6 +219,23 @@ try:
     cmd("bonvel-tema snow_black; setsid -f foot >/dev/null 2>&1", 60)
     time.sleep(5)
     captura("03-terminal")
+
+    # Modo Übermensch: liga, verifica fundo, shader, waybar e mako; desliga e verifica o regresso
+    verif = ("readlink ~/.config/omarchy/current/background; ubermensch estado; "
+             "hyprctl getoption decoration:screen_shader | head -1; "
+             "hyprctl getoption animations:enabled | head -1; makoctl mode")
+    uber = [
+        ("übermensch: ligar", "ubermensch >/dev/null; echo rc=$?; " + verif),
+        ("übermensch: desligar", "ubermensch off; " + verif),
+    ]
+    with open(f"{OUT}/relatorio.txt", "a") as rel:
+        for i, (nome, c) in enumerate(uber):
+            codigo, saida = cmd(c, 60)
+            bloco = f"=== {nome} (código {codigo})\n{saida}\n"
+            print(bloco, flush=True)
+            rel.write(bloco)
+            time.sleep(5)
+            captura(f"0{4 + i}-ubermensch-{'on' if i == 0 else 'off'}")
 finally:
     try:
         ser.sendall(b"poweroff\n")
