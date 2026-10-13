@@ -23,8 +23,8 @@ echo "==> A copiar ficheiros e configurações do BonVel OS para $TARGET..."
 mkdir -p "$TARGET/opt/scripts"
 cp -a /opt/scripts/. "$TARGET/opt/scripts/"
 chmod 755 "$TARGET"/opt/scripts/*.sh "$TARGET/opt/scripts/scriptT"
-cp -a /usr/local/bin/bonvel-tema /usr/local/bin/bonvel-atalhos "$TARGET/usr/local/bin/"
-chmod 755 "$TARGET/usr/local/bin/bonvel-tema" "$TARGET/usr/local/bin/bonvel-atalhos"
+cp -a /usr/local/bin/bonvel-tema /usr/local/bin/bonvel-atalhos /usr/local/bin/ubermensch "$TARGET/usr/local/bin/"
+chmod 755 "$TARGET/usr/local/bin/bonvel-tema" "$TARGET/usr/local/bin/bonvel-atalhos" "$TARGET/usr/local/bin/ubermensch"
 for s in hacked cktor fp IRN; do
     ln -sfn "/opt/scripts/$s.sh" "$TARGET/usr/local/bin/$s"
 done

@@ -46,6 +46,7 @@ No sistema ao vivo:
 |---|---|
 | `bonvel-tema [nome]` | Troca o tema (snow_black, LainOm, greek-noir, gruvu, latchdark) |
 | `bonvel-atalhos` | Lista os atalhos do Hyprland |
+| `ubermensch` | Modo Übermensch: muda o fundo para `End.jpg` |
 | `cktor` | Verifica se o Tor está a funcionar |
 | `fp` | tmux com ping colorido |
 | `hacked`, `IRN` | Brincadeiras visuais (o `IRN` pergunta antes de reiniciar) |

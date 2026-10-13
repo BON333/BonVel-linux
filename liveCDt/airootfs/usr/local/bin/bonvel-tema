@@ -29,8 +29,9 @@ fi
 ln -sfn "../themes/$TEMA" "$OMARCHY/current/theme"
 echo "$TEMA" > "$OMARCHY/current/theme.name"
 
-# Primeira imagem da pasta backgrounds como fundo
-FUNDO="$(find "$THEMES/$TEMA/backgrounds" -maxdepth 1 -type f 2>/dev/null | sort | head -1)"
+# Mantém o fundo atual se o novo tema o tiver; senão, a primeira imagem da pasta backgrounds
+FUNDO="$THEMES/$TEMA/backgrounds/$(basename "$(readlink "$OMARCHY/current/background" 2>/dev/null)")"
+[ -f "$FUNDO" ] || FUNDO="$(find "$THEMES/$TEMA/backgrounds" -maxdepth 1 -type f 2>/dev/null | sort | head -1)"
 if [ -n "$FUNDO" ]; then
     ln -sfn "theme/backgrounds/$(basename "$FUNDO")" "$OMARCHY/current/background"
 fi

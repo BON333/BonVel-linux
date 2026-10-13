@@ -1,0 +1,19 @@
+#!/bin/bash
+# Modo Übermensch: troca o fundo para End.jpg do tema atual.
+
+OMARCHY="$HOME/.config/omarchy"
+FUNDO="End.jpg"
+
+if [ ! -f "$OMARCHY/current/theme/backgrounds/$FUNDO" ]; then
+    echo "O tema atual não tem $FUNDO."
+    exit 1
+fi
+
+ln -sfn "theme/backgrounds/$FUNDO" "$OMARCHY/current/background"
+
+# Aplica sem reiniciar a sessão
+if [ -n "$HYPRLAND_INSTANCE_SIGNATURE" ]; then
+    pkill -x swaybg; setsid -f swaybg -i "$OMARCHY/current/background" -m fill >/dev/null 2>&1
+    notify-send "BonVel OS" "Modo Übermensch ativado" 2>/dev/null
+fi
+echo "Modo Übermensch ativado."

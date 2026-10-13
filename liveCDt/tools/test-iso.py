@@ -150,7 +150,7 @@ try:
         ("Hyprland a correr", "pgrep -a Hyprland"),
         ("waybar/mako/swaybg", "pgrep -l 'waybar|mako|swaybg'"),
         ("scripts executáveis", "ls -l /opt/scripts/ /usr/local/bin/ | grep -v total"),
-        ("links dos comandos", "for c in hacked cktor fp IRN post_install scriptT bonvel-tema bonvel-atalhos; do command -v $c >/dev/null && test -x $(readlink -f $(command -v $c)) && echo \"ok $c\" || echo \"FALHA $c\"; done"),
+        ("links dos comandos", "for c in hacked cktor fp IRN post_install scriptT bonvel-tema bonvel-atalhos ubermensch; do command -v $c >/dev/null && test -x $(readlink -f $(command -v $c)) && echo \"ok $c\" || echo \"FALHA $c\"; done"),
         ("config do root", "test -L /root/.config && echo LINK || echo copia; ls /root/.config/"),
         ("skel limpo", "ls -A /etc/skel/.config/; test -e /etc/skel/.config/dconf && echo SUJO || echo limpo"),
         ("tema atual", "readlink /root/.config/omarchy/current/theme /root/.config/omarchy/current/background; test -f /root/.config/omarchy/current/background && echo fundo-ok"),
@@ -200,7 +200,7 @@ try:
             ("blackarch no disco", "grep -A2 '^\\[blackarch\\]' /mnt/etc/pacman.conf; echo pacotes_blackarch=$(arch-chroot /mnt pacman -Sl blackarch 2>/dev/null | wc -l)", 120),
             ("arranque automático", "cat /mnt/etc/profile.d/bonvel-hyprland.sh | tail -3", 60),
             ("config Hyprland do utilizador", "arch-chroot /mnt su - teste -c 'XDG_RUNTIME_DIR=/tmp Hyprland --verify-config 2>&1 | tail -1'", 120),
-            ("comandos do utilizador", "arch-chroot /mnt su - teste -c 'bonvel-tema --lista; for c in hacked cktor fp IRN scriptT bonvel-atalhos; do command -v $c >/dev/null && echo ok $c || echo FALHA $c; done'", 60),
+            ("comandos do utilizador", "arch-chroot /mnt su - teste -c 'bonvel-tema --lista; for c in hacked cktor fp IRN scriptT bonvel-atalhos ubermensch; do command -v $c >/dev/null && echo ok $c || echo FALHA $c; done'", 60),
         ]
         with open(f"{OUT}/relatorio.txt", "a") as rel:
             for nome, c, t in instalacao:
