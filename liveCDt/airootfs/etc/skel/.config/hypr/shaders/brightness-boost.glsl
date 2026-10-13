@@ -1,1 +1,22 @@
-/usr/share/aether/shaders/brightness-boost.glsl
+#version 300 es
+// BRIGHTNESS BOOST - Increase overall brightness
+// Use with: hyprshade on brightness-boost
+
+precision highp float;
+
+in vec2 v_texcoord;
+uniform sampler2D tex;
+uniform float time;
+out vec4 fragColor;
+
+void main() {
+    vec4 color = texture(tex, v_texcoord);
+
+    // Increase brightness by 30%
+    color.rgb *= 1.3;
+
+    // Clamp to valid range
+    color.rgb = clamp(color.rgb, 0.0, 1.0);
+
+    fragColor = color;
+}
