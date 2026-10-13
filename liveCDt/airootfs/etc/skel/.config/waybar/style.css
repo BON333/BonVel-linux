@@ -43,3 +43,11 @@ window#waybar {
 #pulseaudio.muted {
   color: @warning;
 }
+
+/* Indicador do modo Übermensch: só aparece quando está ativo */
+#custom-ubermensch.ativo {
+  color: @background;
+  background: @foreground;
+  font-weight: bold;
+  padding: 0 10px;
+}

@@ -1,19 +1,134 @@
 #!/bin/bash
-# Modo Übermensch: troca o fundo para End.jpg do tema atual.
+# Modo Übermensch do BonVel OS.
+# Uso: ubermensch                -> ativar (fundo End.jpg, ecrã a preto e branco, não incomodar)
+#      ubermensch off            -> desativar e voltar ao fundo anterior
+#      ubermensch toggle         -> alternar (SUPER + U)
+#      ubermensch frase          -> mostrar uma frase de Nietzsche
+#      ubermensch pomodoro [min] -> temporizador (25 minutos por omissão)
+#      ubermensch sessao         -> Tor + cktor + tmux com recon, notas e shell
+#      ubermensch estado         -> estado em JSON (usado pela waybar)
 
 OMARCHY="$HOME/.config/omarchy"
+DADOS="/usr/share/bonvel/ubermensch"
+ESTADO="${XDG_STATE_HOME:-$HOME/.local/state}/bonvel/ubermensch"
 FUNDO="End.jpg"
 
-if [ ! -f "$OMARCHY/current/theme/backgrounds/$FUNDO" ]; then
-    echo "O tema atual não tem $FUNDO."
-    exit 1
-fi
+ativo() { [ -f "$ESTADO/fundo-anterior" ]; }
 
-ln -sfn "theme/backgrounds/$FUNDO" "$OMARCHY/current/background"
+frase() { shuf -n 1 "$DADOS/frases.txt"; }
 
-# Aplica sem reiniciar a sessão
-if [ -n "$HYPRLAND_INSTANCE_SIGNATURE" ]; then
-    pkill -x swaybg; setsid -f swaybg -i "$OMARCHY/current/background" -m fill >/dev/null 2>&1
-    notify-send "BonVel OS" "Modo Übermensch ativado" 2>/dev/null
-fi
-echo "Modo Übermensch ativado."
+na_sessao() { [ -n "$HYPRLAND_INSTANCE_SIGNATURE" ]; }
+
+trocar_fundo() {
+    ln -sfn "theme/backgrounds/$1" "$OMARCHY/current/background"
+    if na_sessao; then
+        pkill -x swaybg; setsid -f swaybg -i "$OMARCHY/current/background" -m fill >/dev/null 2>&1
+    fi
+}
+
+avisar_waybar() { pkill -RTMIN+8 waybar 2>/dev/null; }
+
+# Aspeto do modo: preto e branco, bordas brancas, mais espaço, sem animações nem blur
+aplicar_hyprland() {
+    na_sessao || return 0
+    hyprctl --batch "\
+keyword decoration:screen_shader $DADOS/grayscale.glsl;\
+keyword general:col.active_border rgb(ffffff);\
+keyword general:col.inactive_border rgb(333333);\
+keyword general:gaps_in 8;\
+keyword general:gaps_out 20;\
+keyword animations:enabled 0;\
+keyword decoration:blur:enabled 0" >/dev/null
+}
+
+ligar() {
+    if ativo; then
+        echo "O modo Übermensch já está ativo."
+        return 0
+    fi
+    if [ ! -f "$OMARCHY/current/theme/backgrounds/$FUNDO" ]; then
+        echo "O tema atual não tem $FUNDO."
+        exit 1
+    fi
+
+    mkdir -p "$ESTADO"
+    basename "$(readlink "$OMARCHY/current/background")" > "$ESTADO/fundo-anterior"
+    trocar_fundo "$FUNDO"
+    aplicar_hyprland
+    makoctl mode -a do-not-disturb >/dev/null 2>&1
+    if command -v powerprofilesctl >/dev/null; then
+        powerprofilesctl get > "$ESTADO/perfil-anterior" 2>/dev/null
+        powerprofilesctl set performance 2>/dev/null
+    fi
+    avisar_waybar
+
+    if command -v fastfetch >/dev/null; then
+        fastfetch --logo "$DADOS/logo.txt" --logo-type file --logo-color-1 white
+    fi
+    echo
+    echo "  « $(frase) »"
+    echo
+    echo "Modo Übermensch ativado. Para sair: ubermensch off"
+}
+
+desligar() {
+    if ! ativo; then
+        echo "O modo Übermensch não está ativo."
+        return 0
+    fi
+
+    ANTERIOR="$(cat "$ESTADO/fundo-anterior")"
+    if [ -n "$ANTERIOR" ] && [ -f "$OMARCHY/current/theme/backgrounds/$ANTERIOR" ]; then
+        trocar_fundo "$ANTERIOR"
+    else
+        trocar_fundo "$(find "$OMARCHY/current/theme/backgrounds/" -maxdepth 1 -type f -printf '%f\n' | sort | head -1)"
+    fi
+    # O reload repõe tudo o que vem dos ficheiros de configuração (shader, bordas, gaps, animações)
+    na_sessao && hyprctl reload >/dev/null
+    makoctl mode -r do-not-disturb >/dev/null 2>&1
+    if [ -s "$ESTADO/perfil-anterior" ] && command -v powerprofilesctl >/dev/null; then
+        powerprofilesctl set "$(cat "$ESTADO/perfil-anterior")" 2>/dev/null
+    fi
+    rm -f "$ESTADO/fundo-anterior" "$ESTADO/perfil-anterior"
+    avisar_waybar
+    echo "Modo Übermensch desativado."
+}
+
+pomodoro() {
+    MIN="${1:-25}"
+    case "$MIN" in ''|*[!0-9]*) echo "Uso: ubermensch pomodoro [minutos]"; exit 1 ;; esac
+    notify-send "Übermensch" "A vontade de poder: $MIN minutos" 2>/dev/null
+    setsid -f bash -c "sleep $((MIN * 60)); notify-send -u critical 'Übermensch' 'Tempo! $MIN minutos cumpridos.'" >/dev/null 2>&1
+    echo "Pomodoro de $MIN minutos iniciado."
+}
+
+sessao() {
+    sudo systemctl start tor && cktor
+    if ! tmux has-session -t ubermensch 2>/dev/null; then
+        tmux new-session -d -s ubermensch -n recon
+        tmux new-window -t ubermensch -n notas "nvim ~/notas-ubermensch.md"
+        tmux new-window -t ubermensch -n shell
+        tmux select-window -t ubermensch:recon
+    fi
+    [ -n "$TMUX" ] && tmux switch-client -t ubermensch || tmux attach -t ubermensch
+}
+
+case "$1" in
+    ""|on)    ligar ;;
+    off)      desligar ;;
+    toggle)   if ativo; then desligar; else ligar; fi ;;
+    frase)    frase ;;
+    pomodoro) pomodoro "$2" ;;
+    sessao)   sessao ;;
+    reaplicar) ativo && aplicar_hyprland ;;
+    estado)
+        if ativo; then
+            echo '{"text": "Ü", "tooltip": "Modo Übermensch ativo (ubermensch off para sair)", "class": "ativo"}'
+        else
+            echo '{"text": "", "class": "inativo"}'
+        fi ;;
+    bloqueio) ativo && frase ;;
+    *)
+        sed -n '3,9s/^# \{0,1\}//p' "$0"
+        exit 1 ;;
+esac

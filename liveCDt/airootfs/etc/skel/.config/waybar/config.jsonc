@@ -5,7 +5,7 @@
   "margin-top": 2,
   "modules-left": ["clock", "hyprland/workspaces"],
   "modules-center": ["hyprland/window"],
-  "modules-right": ["cpu", "memory", "pulseaudio", "network", "battery", "tray"],
+  "modules-right": ["custom/ubermensch", "cpu", "memory", "pulseaudio", "network", "battery", "tray"],
 
   "clock": {
     "interval": 60,
@@ -19,6 +19,12 @@
   },
   "hyprland/window": {
     "max-length": 60
+  },
+  "custom/ubermensch": {
+    "exec": "ubermensch estado",
+    "return-type": "json",
+    "signal": 8,
+    "on-click": "ubermensch off"
   },
   "cpu": {
     "interval": 5,
