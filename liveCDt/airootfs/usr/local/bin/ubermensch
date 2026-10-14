@@ -21,12 +21,29 @@ frase() { shuf -n 1 "$DADOS/frases.txt"; }
 
 na_sessao() { [ -n "$HYPRLAND_INSTANCE_SIGNATURE" ]; }
 
+# Fora de um terminal (ex.: SUPER + U) o echo não se vê, por isso o erro vai também para uma notificação
+erro() {
+    echo "$1" >&2
+    [ -t 1 ] || notify-send -u critical "Übermensch" "$1" 2>/dev/null
+}
+
 # $1 é o destino do link do fundo: relativo a current/ (como no BonVel) ou absoluto
 trocar_fundo() {
     ln -sfn "$1" "$OMARCHY/current/background"
     if na_sessao; then
         pkill -x swaybg; setsid -f swaybg -i "$OMARCHY/current/background" -m fill >/dev/null 2>&1
     fi
+}
+
+fundo_do_tema() {
+    trocar_fundo "theme/backgrounds/$(find "$OMARCHY/current/theme/backgrounds/" -maxdepth 1 -type f -printf '%f\n' | sort | head -1)"
+}
+
+# Se o ficheiro do fundo desapareceu (link partido), o ecrã fica preto: volta ao fundo do tema
+reparar_fundo() {
+    [ -e "$OMARCHY/current/background" ] && return 1
+    fundo_do_tema
+    erro "O fundo tinha desaparecido; reposto o fundo do tema."
 }
 
 avisar_waybar() { pkill -RTMIN+8 waybar 2>/dev/null; }
@@ -67,7 +84,8 @@ ligar() {
     elif [ -f "$DADOS/$FUNDO" ]; then
         NOVO="$DADOS/$FUNDO"
     else
-        echo "Não encontrei $FUNDO no tema atual nem em $DADOS."
+        reparar_fundo
+        erro "Não encontrei $FUNDO no tema atual nem em $DADOS."
         exit 1
     fi
 
@@ -94,7 +112,7 @@ ligar() {
 
 desligar() {
     if ! ativo; then
-        echo "O modo Übermensch não está ativo."
+        reparar_fundo || echo "O modo Übermensch não está ativo."
         return 0
     fi
 
@@ -102,7 +120,7 @@ desligar() {
     if [ -n "$ANTERIOR" ] && (cd "$OMARCHY/current" && [ -f "$ANTERIOR" ]); then
         trocar_fundo "$ANTERIOR"
     else
-        trocar_fundo "theme/backgrounds/$(find "$OMARCHY/current/theme/backgrounds/" -maxdepth 1 -type f -printf '%f\n' | sort | head -1)"
+        fundo_do_tema
     fi
     # O reload repõe tudo o que vem dos ficheiros de configuração (shader, bordas, gaps, animações)
     na_sessao && hyprctl reload >/dev/null
