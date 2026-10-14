@@ -9,7 +9,9 @@
 #      ubermensch estado         -> estado em JSON (usado pela waybar)
 
 OMARCHY="$HOME/.config/omarchy"
+# No BonVel os dados vêm em /usr/share; noutro sistema (ex.: Omarchy) podem estar na home
 DADOS="/usr/share/bonvel/ubermensch"
+[ -d "$DADOS" ] || DADOS="${XDG_DATA_HOME:-$HOME/.local/share}/bonvel/ubermensch"
 ESTADO="${XDG_STATE_HOME:-$HOME/.local/state}/bonvel/ubermensch"
 FUNDO="End.jpg"
 
@@ -19,8 +21,9 @@ frase() { shuf -n 1 "$DADOS/frases.txt"; }
 
 na_sessao() { [ -n "$HYPRLAND_INSTANCE_SIGNATURE" ]; }
 
+# $1 é o destino do link do fundo: relativo a current/ (como no BonVel) ou absoluto
 trocar_fundo() {
-    ln -sfn "theme/backgrounds/$1" "$OMARCHY/current/background"
+    ln -sfn "$1" "$OMARCHY/current/background"
     if na_sessao; then
         pkill -x swaybg; setsid -f swaybg -i "$OMARCHY/current/background" -m fill >/dev/null 2>&1
     fi
@@ -58,14 +61,19 @@ ligar() {
         echo "O modo Übermensch já está ativo."
         return 0
     fi
-    if [ ! -f "$OMARCHY/current/theme/backgrounds/$FUNDO" ]; then
-        echo "O tema atual não tem $FUNDO."
+    # O fundo do tema tem prioridade; senão usa o que vem com os dados do modo
+    if [ -f "$OMARCHY/current/theme/backgrounds/$FUNDO" ]; then
+        NOVO="theme/backgrounds/$FUNDO"
+    elif [ -f "$DADOS/$FUNDO" ]; then
+        NOVO="$DADOS/$FUNDO"
+    else
+        echo "Não encontrei $FUNDO no tema atual nem em $DADOS."
         exit 1
     fi
 
     mkdir -p "$ESTADO"
-    basename "$(readlink "$OMARCHY/current/background")" > "$ESTADO/fundo-anterior"
-    trocar_fundo "$FUNDO"
+    readlink "$OMARCHY/current/background" > "$ESTADO/fundo-anterior"
+    trocar_fundo "$NOVO"
     aplicar_hyprland
     ghostty_relampagos on
     makoctl mode -a do-not-disturb >/dev/null 2>&1
@@ -91,10 +99,10 @@ desligar() {
     fi
 
     ANTERIOR="$(cat "$ESTADO/fundo-anterior")"
-    if [ -n "$ANTERIOR" ] && [ -f "$OMARCHY/current/theme/backgrounds/$ANTERIOR" ]; then
+    if [ -n "$ANTERIOR" ] && (cd "$OMARCHY/current" && [ -f "$ANTERIOR" ]); then
         trocar_fundo "$ANTERIOR"
     else
-        trocar_fundo "$(find "$OMARCHY/current/theme/backgrounds/" -maxdepth 1 -type f -printf '%f\n' | sort | head -1)"
+        trocar_fundo "theme/backgrounds/$(find "$OMARCHY/current/theme/backgrounds/" -maxdepth 1 -type f -printf '%f\n' | sort | head -1)"
     fi
     # O reload repõe tudo o que vem dos ficheiros de configuração (shader, bordas, gaps, animações)
     na_sessao && hyprctl reload >/dev/null
