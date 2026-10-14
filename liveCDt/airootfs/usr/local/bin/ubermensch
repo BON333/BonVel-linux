@@ -3,6 +3,7 @@
 # Uso: ubermensch                -> ativar (fundo End.jpg, ecrã a preto e branco, relâmpagos no Ghostty)
 #      ubermensch off            -> desativar e voltar ao fundo anterior
 #      ubermensch toggle         -> alternar (SUPER + U)
+#      ubermensch raios          -> tirar ou repor os relâmpagos do Ghostty (SUPER + ALT + O)
 #      ubermensch frase          -> mostrar uma frase de Nietzsche
 #      ubermensch pomodoro [min] -> temporizador (25 minutos por omissão)
 #      ubermensch sessao         -> Tor + cktor + tmux com recon, notas e shell
@@ -48,12 +49,14 @@ reparar_fundo() {
 
 avisar_waybar() { pkill -RTMIN+8 waybar 2>/dev/null; }
 
-# O config do Ghostty inclui este ficheiro (se existir); o SIGUSR2 recarrega as janelas abertas
+# O config do Ghostty inclui este ficheiro (se existir); o SIGUSR2 recarrega as janelas abertas.
+# Com o ficheiro sem-raios (criado por "ubermensch raios") o terminal fica só preto, sem relâmpagos;
+# a escolha fica guardada para as próximas vezes que o modo for ligado.
 ghostty_relampagos() {
     if [ "$1" = on ]; then
-        printf '%s\n' "background = #000000" "background-opacity = 1" \
-            "custom-shader = $DADOS/relampagos.glsl" "custom-shader-animation = always" \
-            > "$ESTADO/ghostty.conf"
+        printf '%s\n' "background = #000000" "background-opacity = 1" > "$ESTADO/ghostty.conf"
+        [ -f "$ESTADO/sem-raios" ] || printf '%s\n' "custom-shader = $DADOS/relampagos.glsl" \
+            "custom-shader-animation = always" >> "$ESTADO/ghostty.conf"
     else
         rm -f "$ESTADO/ghostty.conf"
     fi
@@ -134,6 +137,21 @@ desligar() {
     echo "Modo Übermensch desativado."
 }
 
+raios() {
+    if ! ativo; then
+        erro "O modo Übermensch não está ativo (liga-o com SUPER + U)."
+        exit 1
+    fi
+    if [ -f "$ESTADO/sem-raios" ]; then
+        rm -f "$ESTADO/sem-raios"
+        echo "Relâmpagos ligados."
+    else
+        touch "$ESTADO/sem-raios"
+        echo "Relâmpagos desligados."
+    fi
+    ghostty_relampagos on
+}
+
 pomodoro() {
     MIN="${1:-25}"
     case "$MIN" in ''|*[!0-9]*) echo "Uso: ubermensch pomodoro [minutos]"; exit 1 ;; esac
@@ -157,6 +175,7 @@ case "$1" in
     ""|on)    ligar ;;
     off)      desligar ;;
     toggle)   if ativo; then desligar; else ligar; fi ;;
+    raios)    raios ;;
     frase)    frase ;;
     pomodoro) pomodoro "$2" ;;
     sessao)   sessao ;;
@@ -169,6 +188,6 @@ case "$1" in
         fi ;;
     bloqueio) ativo && frase ;;
     *)
-        sed -n '3,9s/^# \{0,1\}//p' "$0"
+        sed -n '3,10s/^# \{0,1\}//p' "$0"
         exit 1 ;;
 esac

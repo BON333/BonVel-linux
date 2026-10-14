@@ -71,6 +71,7 @@ Escreve `ubermensch` no terminal (ou carrega em `SUPER + U`) e o ambiente muda:
 | `ubermensch` | Liga o modo |
 | `ubermensch off` | Volta ao fundo e às definições anteriores |
 | `ubermensch toggle` | Liga ou desliga (é o que o `SUPER + U` usa) |
+| `ubermensch raios` | Tira ou repõe só os relâmpagos do Ghostty (`SUPER + ALT + O`); a escolha fica guardada |
 | `ubermensch frase` | Mostra uma frase de Nietzsche |
 | `ubermensch pomodoro [min]` | Temporizador com aviso no fim (25 minutos por omissão) |
 | `ubermensch sessao` | Inicia o Tor, corre o `cktor` e abre um tmux com as janelas recon, notas e shell |
