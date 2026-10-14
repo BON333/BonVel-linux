@@ -77,6 +77,8 @@ Escreve `ubermensch` no terminal (ou carrega em `SUPER + U`) e o ambiente muda:
 
 As frases, o logótipo e os shaders estão em `/usr/share/bonvel/ubermensch/`.
 
+O modo também tem repositório próprio, para instalar no Omarchy ou noutro Hyprland: [BON333/ubermensch](https://github.com/BON333/ubermensch).
+
 ## Shaders do ecrã
 
 Em `~/.config/hypr/shaders/` há 137 shaders para o Hyprland (preto e branco, CRT, matrix, visão noturna, filtros para daltonismo e outros).
