@@ -31,7 +31,7 @@ No sistema ao vivo:
 
 | Atalho | Ação |
 |---|---|
-| `SUPER + ENTER` | Terminal (foot) |
+| `SUPER + ENTER` | Terminal (Ghostty) |
 | `SUPER + SPACE` | Menu de aplicações (wofi) |
 | `SUPER + SHIFT + B` | Firefox |
 | `SUPER + W` | Fechar janela |
@@ -59,6 +59,7 @@ Escreve `ubermensch` no terminal (ou carrega em `SUPER + U`) e o ambiente muda:
 
 - fundo `End.jpg`;
 - ecrã a preto e branco (shader `grayscale.glsl`);
+- terminal Ghostty preto com relâmpagos brancos sem parar (shader `relampagos.glsl`; as janelas já abertas mudam na hora);
 - bordas brancas, mais espaço entre janelas, sem animações nem blur;
 - notificações em "não incomodar" (os avisos do `notify-send` continuam a aparecer);
 - perfil de energia `performance`, se o `powerprofilesctl` estiver instalado;
@@ -74,7 +75,7 @@ Escreve `ubermensch` no terminal (ou carrega em `SUPER + U`) e o ambiente muda:
 | `ubermensch pomodoro [min]` | Temporizador com aviso no fim (25 minutos por omissão) |
 | `ubermensch sessao` | Inicia o Tor, corre o `cktor` e abre um tmux com as janelas recon, notas e shell |
 
-As frases, o logótipo e o shader estão em `/usr/share/bonvel/ubermensch/`.
+As frases, o logótipo e os shaders estão em `/usr/share/bonvel/ubermensch/`.
 
 ## Shaders do ecrã
 
@@ -96,7 +97,7 @@ Os shaders mais simples (cores, preto e branco) quase não gastam nada; os anima
 | `packages.x86_64` | Pacotes instalados na ISO |
 | `pacman.conf` | Repositórios (core, extra, multilib, blackarch) |
 | `airootfs/` | Ficheiros copiados para o sistema ao vivo |
-| `airootfs/etc/skel/.config/` | Hyprland, waybar, foot, wofi, mako e temas |
+| `airootfs/etc/skel/.config/` | Hyprland, waybar, Ghostty, foot, wofi, mako e temas |
 | `airootfs/opt/scripts/` | Scripts do BonVel |
 | `airootfs/usr/local/bin/` | Comandos `bonvel-tema`, `bonvel-atalhos` e `ubermensch` |
 | `airootfs/usr/share/bonvel/` | Página inicial do Firefox, lista de pacotes e ficheiros do modo Übermensch |

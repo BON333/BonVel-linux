@@ -4,6 +4,7 @@
 # Ambiente gráfico
 hyprland
 foot
+ghostty
 waybar
 wofi
 mako

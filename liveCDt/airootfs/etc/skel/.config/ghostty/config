@@ -39,3 +39,6 @@ mouse-scroll-multiplier = 0.95
 
 # Fix general slowness on hyprland (https://github.com/ghostty-org/ghostty/discussions/3224)
 async-backend = epoll
+
+# Modo Übermensch: o comando ubermensch cria este ficheiro (fundo preto com relâmpagos)
+config-file = ?"~/.local/state/bonvel/ubermensch/ghostty.conf"

@@ -159,12 +159,13 @@ try:
         ("chaves pacman", "systemctl is-active pacman-init; pacman-key --list-keys F9A6E68A711354D84A9B91637533BAFE69A25079 | head -2"),
         ("repo blackarch", "pacman -Sy >/dev/null 2>&1; echo sync=$?; echo pacotes_blackarch=$(pacman -Sl blackarch 2>/dev/null | wc -l)"),
         ("rede", "ip -br a; ping -c1 -W3 archlinux.org | tail -2"),
-        ("ferramentas", "for b in Hyprland foot waybar wofi mako firefox nmap hydra msfconsole sqlmap john aircrack-ng tshark tor torsocks feh lolcat mpv python3 hyprlock hypridle swaybg grim wpctl; do command -v $b >/dev/null || echo FALTA $b; done; echo verificado"),
+        ("ferramentas", "for b in Hyprland foot ghostty waybar wofi mako firefox nmap hydra msfconsole sqlmap john aircrack-ng tshark tor torsocks feh lolcat mpv python3 hyprlock hypridle swaybg grim wpctl; do command -v $b >/dev/null || echo FALTA $b; done; echo verificado"),
         ("erros do Hyprland", "f=$(ls -t /run/user/0/hypr/*/hyprland.log 2>/dev/null | head -1); echo log=$f; grep -iE 'error|fail' $f | grep -v 'no error' | head -20"),
         ("pacotes desktop", "grep -vcE '^\\s*(#|$)' /usr/share/bonvel/pacotes-desktop.txt; cat /etc/profile.d/bonvel-hyprland.sh | head -3"),
         ("motd", "head -3 /etc/motd"),
         ("os-release", "grep PRETTY_NAME /etc/os-release"),
         ("config do foot", "foot --check-config && echo foot-ok"),
+        ("config do Ghostty", "ghostty +validate-config --config-file=/etc/skel/.config/ghostty/config && echo ghostty-ok"),
         ("arranque do Hyprland", "pgrep -a start-hyprland; f=$(ls -t /run/user/0/hypr/*/hyprland.log | head -1); grep -ci 'without start-hyprland' $f"),
         ("cow_spacesize", "grep -o 'cow_spacesize=[^ ]*' /proc/cmdline"),
         ("tamanho", "df -h /run/archiso/airootfs / 2>/dev/null | tail -2"),
@@ -223,9 +224,10 @@ try:
     # Modo Übermensch: liga, verifica fundo, shader, waybar e mako; desliga e verifica o regresso
     verif = ("readlink ~/.config/omarchy/current/background; ubermensch estado; "
              "hyprctl getoption decoration:screen_shader | head -1; "
-             "hyprctl getoption animations:enabled | head -1; makoctl mode")
+             "hyprctl getoption animations:enabled | head -1; makoctl mode; "
+             "cat ~/.local/state/bonvel/ubermensch/ghostty.conf 2>/dev/null || echo sem-relampagos")
     uber = [
-        ("übermensch: ligar", "ubermensch >/dev/null; echo rc=$?; " + verif),
+        ("übermensch: ligar", "ubermensch >/dev/null; echo rc=$?; setsid -f ghostty >/dev/null 2>&1; " + verif),
         ("übermensch: desligar", "ubermensch off; " + verif),
     ]
     with open(f"{OUT}/relatorio.txt", "a") as rel:

@@ -132,6 +132,7 @@ zsh
 # Ambiente Gráfico e Terminal
 hyprland
 foot
+ghostty
 waybar
 wofi
 mako

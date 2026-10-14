@@ -1,6 +1,6 @@
 #!/bin/bash
 # Modo Übermensch do BonVel OS.
-# Uso: ubermensch                -> ativar (fundo End.jpg, ecrã a preto e branco, não incomodar)
+# Uso: ubermensch                -> ativar (fundo End.jpg, ecrã a preto e branco, relâmpagos no Ghostty)
 #      ubermensch off            -> desativar e voltar ao fundo anterior
 #      ubermensch toggle         -> alternar (SUPER + U)
 #      ubermensch frase          -> mostrar uma frase de Nietzsche
@@ -27,6 +27,18 @@ trocar_fundo() {
 }
 
 avisar_waybar() { pkill -RTMIN+8 waybar 2>/dev/null; }
+
+# O config do Ghostty inclui este ficheiro (se existir); o SIGUSR2 recarrega as janelas abertas
+ghostty_relampagos() {
+    if [ "$1" = on ]; then
+        printf '%s\n' "background = #000000" "background-opacity = 1" \
+            "custom-shader = $DADOS/relampagos.glsl" "custom-shader-animation = always" \
+            > "$ESTADO/ghostty.conf"
+    else
+        rm -f "$ESTADO/ghostty.conf"
+    fi
+    pkill -USR2 -x ghostty 2>/dev/null
+}
 
 # Aspeto do modo: preto e branco, bordas brancas, mais espaço, sem animações nem blur
 aplicar_hyprland() {
@@ -55,6 +67,7 @@ ligar() {
     basename "$(readlink "$OMARCHY/current/background")" > "$ESTADO/fundo-anterior"
     trocar_fundo "$FUNDO"
     aplicar_hyprland
+    ghostty_relampagos on
     makoctl mode -a do-not-disturb >/dev/null 2>&1
     if command -v powerprofilesctl >/dev/null; then
         powerprofilesctl get > "$ESTADO/perfil-anterior" 2>/dev/null
@@ -85,6 +98,7 @@ desligar() {
     fi
     # O reload repõe tudo o que vem dos ficheiros de configuração (shader, bordas, gaps, animações)
     na_sessao && hyprctl reload >/dev/null
+    ghostty_relampagos off
     makoctl mode -r do-not-disturb >/dev/null 2>&1
     if [ -s "$ESTADO/perfil-anterior" ] && command -v powerprofilesctl >/dev/null; then
         powerprofilesctl set "$(cat "$ESTADO/perfil-anterior")" 2>/dev/null
