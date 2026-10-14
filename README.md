@@ -40,3 +40,7 @@ Os atalhos, os comandos do BonVel, o modo Übermensch em detalhe e a estrutura d
 ## Problemas e sugestões
 
 Abre uma [issue](https://github.com/BON333/BonVel-linux/issues).
+
+## Licença
+
+[MIT](LICENSE). Os shaders do ecrã vêm do [Aether](https://github.com/bjarneo/aether), também com licença MIT.
