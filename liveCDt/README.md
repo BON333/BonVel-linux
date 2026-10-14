@@ -3,7 +3,7 @@
 Distribuição Linux baseada em Arch Linux, construída com [archiso](https://wiki.archlinux.org/title/Archiso).
 Arranca num ambiente Hyprland com o tema snow_black e traz ferramentas de segurança (metasploit, hydra, sqlmap, john, aircrack-ng, wireshark-cli, nmap).
 
-Autores: Hussein ([BON333](https://github.com/BON333)) e [Mente-MiIionaria](https://github.com/Mente-MiIionaria).
+Criado por Hussein ([BON333](https://github.com/BON333)) e Kleyton ([Mente-MiIionaria](https://github.com/Mente-MiIionaria)).
 
 ## Construir a ISO
 
