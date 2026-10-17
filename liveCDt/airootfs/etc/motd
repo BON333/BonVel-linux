@@ -1,5 +1,5 @@
 Bem-vindo ao [38;2;137;180;250mBonVel OS[0m (baseado em Arch Linux).
-Para instalar: corre [35marchinstall[0m e depois [35m/opt/scripts/post_install.sh[0m antes de reiniciar.
+Para instalar no disco: corre [35mbonvel-instalar[0m (rede, archinstall e BonVel num só passo).
 Guia do Arch: https://wiki.archlinux.org/title/Installation_guide
 
 For Wi-Fi, authenticate to the wireless network using the [35miwctl[0m utility.

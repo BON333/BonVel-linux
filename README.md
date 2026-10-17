@@ -27,7 +27,7 @@ tools/build.sh       # constrói a ISO em ~/iso_out
 tools/runSystem.sh   # experimenta a ISO no QEMU
 ```
 
-Para instalar no disco, a partir do sistema ao vivo: corre `archinstall`, depois `post_install` antes de reiniciar, e entra com o teu utilizador no tty1.
+Para instalar no disco, a partir do sistema ao vivo: corre `bonvel-instalar` (rede, `archinstall` e BonVel num só passo) e, depois de reiniciar, entra com o teu utilizador no tty1.
 
 ## Documentação
 

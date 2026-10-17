@@ -33,4 +33,5 @@ file_permissions=(
   ["/opt/scripts/fp.sh"]="0:0:755"
   ["/opt/scripts/IRN.sh"]="0:0:755"
   ["/opt/scripts/post_install.sh"]="0:0:755"
+  ["/opt/scripts/bonvel-instalar.sh"]="0:0:755"
 )

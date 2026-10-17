@@ -21,11 +21,14 @@ O `build.sh` assina a chave do repositório BlackArch na primeira vez, porque o 
 
 ## Instalar no disco
 
-No sistema ao vivo:
+No sistema ao vivo, corre `bonvel-instalar`. Ele trata de tudo por ordem:
 
-1. `archinstall`
-2. Antes de reiniciar, com internet: `post_install` (instala os pacotes do BonVel no disco e copia os scripts, temas e configurações para `/mnt`)
-3. Reinicia e entra com o teu utilizador no tty1: o Hyprland arranca sozinho
+1. Verifica a internet e abre o `iwctl` se precisares de Wi-Fi
+2. Abre o `archinstall` com dicas para o BonVel: perfil **Minimal**, um utilizador com sudo, "Copy ISO network configuration" e, no fim, **Exit archinstall** (não "Reboot system")
+3. Corre o `post_install`, que instala os pacotes do BonVel no disco e copia os scripts, temas e configurações para `/mnt`
+4. Pergunta se queres reiniciar. Depois entra com o teu utilizador no tty1: o Hyprland arranca sozinho
+
+Se reiniciaste antes do passo 3, arranca de novo a ISO e corre `bonvel-instalar --sem-archinstall`: ele encontra o sistema no disco, monta-o e instala o BonVel. Os passos à mão continuam a funcionar (`archinstall`, depois `post_install` antes de reiniciar).
 
 ## Atalhos principais
 
@@ -47,6 +50,7 @@ No sistema ao vivo:
 |---|---|
 | `bonvel-tema [nome]` | Troca o tema (snow_black, LainOm, greek-noir, gruvu, latchdark) |
 | `bonvel-atalhos` | Lista os atalhos do Hyprland |
+| `bonvel-instalar` | Instala o BonVel no disco (só no sistema ao vivo) |
 | `ubermensch` | Liga o modo Übermensch (ver abaixo) |
 | `cktor` | Verifica se o Tor está a funcionar |
 | `fp` | tmux com ping colorido |
