@@ -51,6 +51,7 @@ Se reiniciaste antes do passo 3, arranca de novo a ISO e corre `bonvel-instalar 
 | `bonvel-tema [nome]` | Troca o tema (snow_black, LainOm, greek-noir, gruvu, latchdark) |
 | `bonvel-atalhos` | Lista os atalhos do Hyprland |
 | `bonvel-instalar` | Instala o BonVel no disco (só no sistema ao vivo) |
+| `bonvel-boas-vindas` | Ecrã de boas-vindas com os atalhos principais (abre sozinho no primeiro arranque) |
 | `ubermensch` | Liga o modo Übermensch (ver abaixo) |
 | `cktor` | Verifica se o Tor está a funcionar |
 | `fp` | tmux com ping colorido |
@@ -106,7 +107,7 @@ Os shaders mais simples (cores, preto e branco) quase não gastam nada; os anima
 | `airootfs/` | Ficheiros copiados para o sistema ao vivo |
 | `airootfs/etc/skel/.config/` | Hyprland, waybar, Ghostty, foot, wofi, mako e temas |
 | `airootfs/opt/scripts/` | Scripts do BonVel |
-| `airootfs/usr/local/bin/` | Comandos `bonvel-tema`, `bonvel-atalhos` e `ubermensch` |
+| `airootfs/usr/local/bin/` | Comandos `bonvel-tema`, `bonvel-atalhos`, `bonvel-boas-vindas` e `ubermensch` |
 | `airootfs/usr/share/bonvel/` | Página inicial do Firefox, lista de pacotes e ficheiros do modo Übermensch |
 | `airootfs/etc/skel/.config/hypr/shaders/` | Shaders do ecrã (Aether) |
 | `syslinux/`, `efiboot/`, `grub/` | Menus de arranque (BIOS e UEFI) |

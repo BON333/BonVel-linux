@@ -25,6 +25,7 @@ file_permissions=(
   ["/usr/local/bin/bonvel-tema"]="0:0:755"
   ["/usr/local/bin/bonvel-atalhos"]="0:0:755"
   ["/usr/local/bin/ubermensch"]="0:0:755"
+  ["/usr/local/bin/bonvel-boas-vindas"]="0:0:755"
   # O mkarchiso não preserva permissões: cada script tem de estar aqui para ser executável
   ["/opt/scripts"]="0:0:755"
   ["/opt/scripts/scriptT"]="0:0:755"

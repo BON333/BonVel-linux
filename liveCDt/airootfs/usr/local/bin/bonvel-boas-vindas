@@ -1,0 +1,72 @@
+#!/bin/bash
+# Ecrã de boas-vindas do BonVel OS: atalhos principais e, no sistema ao vivo, a instalação.
+# Uso: bonvel-boas-vindas                abre o ecrã numa janela do Ghostty
+#      bonvel-boas-vindas --primeira-vez  só abre se ainda não foi visto (é o que o Hyprland corre ao arrancar)
+#      bonvel-boas-vindas --mostrar       mostra o ecrã no terminal atual
+
+MARCA="${XDG_STATE_HOME:-$HOME/.local/state}/bonvel/boas-vindas-visto"
+AO_VIVO=0
+[ -d /run/archiso ] && AO_VIVO=1
+
+abrir() {
+    exec ghostty --class=org.bonvel.boasvindas --background-opacity=1 --title="Bem-vindo ao BonVel OS" -e bonvel-boas-vindas --mostrar
+}
+
+mostrar() {
+    local azul=$'\e[38;2;137;180;250m' rosa=$'\e[35m' cinza=$'\e[90m' negrito=$'\e[1m' normal=$'\e[0m' tecla
+    # Alinha à mão: o printf conta bytes e desalinha as linhas com acentos ("ESPAÇO")
+    atalho() { printf '   %s%s%s%*s %s\n' "$rosa" "$1" "$normal" $((22 - ${#1})) "" "$2"; }
+
+    clear
+    printf '\n  %s%sBem-vindo ao BonVel OS%s\n' "$negrito" "$azul" "$normal"
+    printf '  %sArch Linux com Hyprland, temas e ferramentas de segurança.%s\n\n' "$cinza" "$normal"
+
+    if [ "$AO_VIVO" -eq 1 ]; then
+        printf '  Estás no %ssistema ao vivo%s: nada fica guardado ao desligar.\n' "$negrito" "$normal"
+        printf '  Para instalar no disco carrega em %sI%s ou corre %sbonvel-instalar%s num terminal.\n\n' "$rosa" "$normal" "$rosa" "$normal"
+    fi
+
+    printf '  %sAtalhos principais%s\n' "$negrito" "$normal"
+    atalho "SUPER + ENTER" "Terminal"
+    atalho "SUPER + ESPAÇO" "Menu de aplicações"
+    atalho "SUPER + SHIFT + B" "Browser"
+    atalho "SUPER + W" "Fechar janela"
+    atalho "SUPER + F" "Ecrã inteiro"
+    atalho "SUPER + 1 … 0" "Mudar de área de trabalho"
+    atalho "SUPER + CTRL + T" "Trocar tema"
+    atalho "SUPER + U" "Modo Übermensch"
+    atalho "PRINT" "Captura de uma região do ecrã"
+    atalho "SUPER + K" "Todos os atalhos"
+
+    printf '\n  %sComandos%s\n' "$negrito" "$normal"
+    atalho "bonvel-tema" "Trocar tema pelo nome"
+    atalho "ubermensch" "Modo de foco (pomodoro, Tor, tmux)"
+    atalho "cktor" "Verificar se o Tor está a funcionar"
+    atalho "bonvel-boas-vindas" "Voltar a abrir este ecrã"
+
+    printf '\n  '
+    [ "$AO_VIVO" -eq 1 ] && printf '%s[I]%s Instalar   ' "$rosa" "$normal"
+    printf '%s[K]%s Todos os atalhos   %s[Enter]%s Fechar ' "$rosa" "$normal" "$rosa" "$normal"
+
+    read -rsn1 tecla
+    case "$tecla" in
+        i|I)
+            if [ "$AO_VIVO" -eq 1 ]; then
+                clear
+                exec bonvel-instalar
+            fi
+            ;;
+        k|K) setsid -f bonvel-atalhos >/dev/null 2>&1 ;;
+    esac
+}
+
+case "${1:-}" in
+    --primeira-vez)
+        [ -e "$MARCA" ] && exit 0
+        mkdir -p "$(dirname "$MARCA")" && touch "$MARCA"
+        abrir
+        ;;
+    --mostrar) mostrar ;;
+    "") abrir ;;
+    *) echo "Uso: bonvel-boas-vindas [--primeira-vez|--mostrar]" >&2; exit 1 ;;
+esac
