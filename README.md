@@ -3,6 +3,8 @@
 Distribuição Linux baseada em Arch Linux, feita com [archiso](https://wiki.archlinux.org/title/Archiso).
 Arranca direto num ambiente Hyprland já configurado, com temas, atalhos prontos e ferramentas de segurança incluídas.
 
+![Ambiente de trabalho do BonVel com o tema snow_black](docs/tema-1-snow_black.webp)
+
 ## Criadores
 
 Criado por **Hussein** ([BON333](https://github.com/BON333)) e **Kleyton** ([Mente-MiIionaria](https://github.com/Mente-MiIionaria)).
@@ -15,6 +17,29 @@ Criado por **Hussein** ([BON333](https://github.com/BON333)) e **Kleyton** ([Men
 - **Shaders do ecrã** para o Hyprland (CRT, matrix, visão noturna, filtros para daltonismo e outros), vindos do [Aether](https://github.com/bjarneo/aether)
 - **Ferramentas de segurança** do BlackArch: metasploit, hydra, sqlmap, john, aircrack-ng, wireshark-cli, nmap
 - **Arranque em BIOS e UEFI**, com menu GRUB próprio
+- **Instalador** `bonvel-instalar` e um ecrã de boas-vindas com os atalhos principais
+
+## Imagens
+
+### Temas
+
+| LainOm | greek-noir |
+|---|---|
+| ![Tema LainOm](docs/tema-2-LainOm.webp) | ![Tema greek-noir](docs/tema-3-greek-noir.webp) |
+| **gruvu** | **latchdark** |
+| ![Tema gruvu](docs/tema-4-gruvu.webp) | ![Tema latchdark](docs/tema-5-latchdark.webp) |
+
+### Modo Übermensch
+
+![Modo Übermensch: ecrã a preto e branco com relâmpagos no terminal](docs/ubermensch.gif)
+
+### Ecrã de boas-vindas
+
+No primeiro arranque aparece um resumo dos atalhos. No sistema ao vivo, a tecla `I` abre o instalador.
+
+![Ecrã de boas-vindas no sistema ao vivo](docs/boas-vindas.webp)
+
+As imagens são geradas com `liveCDt/tools/capturas.py`, que arranca a ISO no QEMU e tira as capturas sozinho.
 
 ## Começar
 

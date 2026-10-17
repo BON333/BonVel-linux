@@ -15,6 +15,7 @@ tools/runSystem.sh      # testa a ISO mais recente no QEMU (UEFI)
 tools/test-arranque.sh  # capturas do menu de arranque em BIOS e UEFI
 tools/test-iso.py       # teste automático: arranca a ISO sem janela, verifica serviços,
                         # scripts, temas, Hyprland e o modo Übermensch, e tira capturas de ecrã
+tools/capturas.py       # gera as imagens do README em docs/ (temas, boas-vindas, GIF do Übermensch)
 ```
 
 O `build.sh` assina a chave do repositório BlackArch na primeira vez, porque o `pacman.conf` exige assinaturas válidas.
