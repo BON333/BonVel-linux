@@ -1,0 +1,2 @@
+%wheel ALL=(ALL:ALL) ALL
+bonvel ALL=(root) NOPASSWD: /usr/local/bin/bonvel-live-set-password

@@ -106,6 +106,18 @@ def screendump(destino):
     m.close()
 
 
+def enviar_teclas(texto):
+    """Escreve no tty gráfico através do teclado virtual do QEMU."""
+    m = socket.socket(socket.AF_UNIX)
+    m.connect(mon_sock)
+    for tecla in texto:
+        m.sendall(f"sendkey {tecla}\n".encode())
+        time.sleep(0.15)
+    m.sendall(b"sendkey ret\n")
+    time.sleep(1)
+    m.close()
+
+
 def captura(nome):
     screendump(f"{TMP}/{nome}.ppm")
     subprocess.run(["magick", f"{TMP}/{nome}.ppm", "-quality", "92", f"{DOCS}/{nome}.webp"], check=True)
@@ -123,11 +135,13 @@ def gif(nome, quadros=24, intervalo=0.25):
     print(f"gif: {DOCS}/{nome}.gif")
 
 
-SESSAO = ("export HYPRLAND_INSTANCE_SIGNATURE=$(ls /run/user/0/hypr/ | head -1) "
-          "XDG_RUNTIME_DIR=/run/user/0 WAYLAND_DISPLAY=wayland-1")
+SESSAO = ("LIVE_UID=$(id -u bonvel); LIVE_RUNTIME=/run/user/$LIVE_UID; "
+          "LIVE_HYPR=$(find \"$LIVE_RUNTIME/hypr\" -mindepth 1 -maxdepth 1 -type d -printf '%f\\n' | head -1); "
+          "asbonvel(){ sudo -u bonvel -H env XDG_RUNTIME_DIR=\"$LIVE_RUNTIME\" "
+          "HYPRLAND_INSTANCE_SIGNATURE=\"$LIVE_HYPR\" WAYLAND_DISPLAY=wayland-1 \"$@\"; }")
 # Ghostty com fastfetch à esquerda e o neovim (com as cores do tema) à direita
-TERMINAIS = ("setsid -f ghostty -e bash -c 'clear; fastfetch; exec bash' >/dev/null 2>&1; sleep 3; "
-             "setsid -f ghostty -e nvim -R /usr/local/bin/bonvel-tema >/dev/null 2>&1; sleep 4")
+TERMINAIS = ("asbonvel setsid -f ghostty -e bash -c 'clear; fastfetch; exec bash' >/dev/null 2>&1; sleep 3; "
+             "asbonvel setsid -f ghostty -e nvim -R /usr/local/bin/bonvel-tema >/dev/null 2>&1; sleep 4")
 FECHAR = "pkill -x ghostty; pkill -f wofi; sleep 2"
 
 try:
@@ -140,6 +154,14 @@ try:
     ser.sendall(b"stty -echo\n")
     time.sleep(2)
     buf = ""
+
+    # A primeira entrada pede para definir uma palavra-passe no tty1.
+    time.sleep(5)
+    enviar_teclas("bonveltest")
+    time.sleep(1)
+    enviar_teclas("bonveltest")
+    time.sleep(3)
+    cmd("echo bonveltest | sudo -u bonvel -H sudo -S -v")
     time.sleep(40)  # dá tempo ao Hyprland do tty1
 
     # Comandos e configurações do repositório por cima dos da ISO
@@ -147,28 +169,29 @@ try:
         " && find /repo/usr/local/bin -maxdepth 1 -type f -exec install -m755 {} /usr/local/bin/ \\;"
         " && install -m755 /repo/opt/scripts/*.sh /opt/scripts/"
         " && ln -sfn /opt/scripts/bonvel-instalar.sh /usr/local/bin/bonvel-instalar"
-        " && cp -r /repo/etc/skel/.config/hypr/. /root/.config/hypr/"
+        " && cp -r /repo/etc/skel/.config/hypr/. /home/bonvel/.config/hypr/"
+        " && chown -R bonvel:bonvel /home/bonvel/.config/hypr"
         " && cp -r /repo/usr/share/bonvel/. /usr/share/bonvel/")
-    cmd(SESSAO + "; hyprctl reload >/dev/null; sleep 2")
+    cmd(SESSAO + "; asbonvel hyprctl reload >/dev/null; sleep 2")
 
     # Aquecimento: no primeiro arranque o neovim demora e a captura sairia com a janela vazia
     cmd(f"{TERMINAIS}; sleep 5", 90)
 
     # Um ambiente de trabalho por tema
     for i, tema in enumerate(TEMAS, 1):
-        cmd(f"{FECHAR}; bonvel-tema {tema} >/dev/null; sleep 3; {TERMINAIS}", 90)
+        cmd(f"{FECHAR}; asbonvel bonvel-tema {tema} >/dev/null; sleep 3; {TERMINAIS}", 90)
         captura(f"tema-{i}-{tema}")
 
     # Ecrã de boas-vindas por cima do ambiente de trabalho (no sistema ao vivo, com a opção de instalar)
-    cmd(f"{FECHAR}; bonvel-tema snow_black >/dev/null; sleep 3; {TERMINAIS}; "
-        "setsid -f bonvel-boas-vindas >/dev/null 2>&1; sleep 4", 90)
+    cmd(f"{FECHAR}; asbonvel bonvel-tema snow_black >/dev/null; sleep 3; {TERMINAIS}; "
+        "asbonvel setsid -f bonvel-boas-vindas >/dev/null 2>&1; sleep 4", 90)
     captura("boas-vindas")
 
     # Modo Übermensch: preto e branco e relâmpagos no Ghostty
-    cmd(f"{FECHAR}; ubermensch >/dev/null; sleep 3; {TERMINAIS}", 90)
+    cmd(f"{FECHAR}; asbonvel ubermensch >/dev/null; sleep 3; {TERMINAIS}", 90)
     captura("ubermensch")
     gif("ubermensch")
-    cmd("ubermensch off >/dev/null")
+    cmd("asbonvel ubermensch off >/dev/null")
 finally:
     try:
         ser.sendall(b"poweroff\n")

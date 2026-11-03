@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if ! getent passwd bonvel >/dev/null; then
+    useradd --create-home --user-group --groups wheel --shell /usr/bin/zsh bonvel
+fi
+
+install -d -o bonvel -g bonvel -m 0750 /home/bonvel
+if [[ ! -e /home/bonvel/.local/state/bonvel/live-home-initialized ]]; then
+    cp -a /etc/skel/. /home/bonvel/
+    install -o bonvel -g bonvel -m 0644 /etc/bonvel/live.zlogin /home/bonvel/.zlogin
+    install -d -o bonvel -g bonvel -m 0755 /home/bonvel/.local/state/bonvel
+    touch /home/bonvel/.local/state/bonvel/live-home-initialized
+    chown -R bonvel:bonvel /home/bonvel
+fi

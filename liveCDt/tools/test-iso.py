@@ -112,6 +112,18 @@ def captura(nome):
     print(f"captura: {OUT}/{nome}.png")
 
 
+def enviar_teclas(texto):
+    """Escreve no tty gráfico através do teclado virtual do QEMU."""
+    m = socket.socket(socket.AF_UNIX)
+    m.connect(mon_sock)
+    for tecla in texto:
+        m.sendall(f"sendkey {tecla}\n".encode())
+        time.sleep(0.15)
+    m.sendall(b"sendkey ret\n")
+    time.sleep(1)
+    m.close()
+
+
 MARCA = "__BONVEL_FIM__"
 
 
@@ -140,33 +152,43 @@ try:
     time.sleep(2)
     buf = ""
 
-    # Dá tempo ao Hyprland do tty1
+    # A primeira entrada pede para definir uma palavra-passe no tty1.
+    time.sleep(5)
+    enviar_teclas("bonveltest")
+    time.sleep(1)
+    enviar_teclas("bonveltest")
+    time.sleep(3)
+    cmd("echo bonveltest | sudo -u bonvel -H sudo -S -v", 60)
+
+    # Dá tempo ao Hyprland do tty1, iniciado pelo utilizador live sem privilégios.
     time.sleep(40)
     captura("01-tty1")
 
     verificacoes = [
         ("hostname", "hostname"),
         ("sistema arrancou", "systemctl is-system-running --wait; systemctl --failed --no-legend"),
-        ("Hyprland a correr", "pgrep -a Hyprland"),
-        ("waybar/mako/swaybg", "pgrep -l 'waybar|mako|swaybg'"),
+        ("utilizador live e sudo", "id bonvel; id -nG bonvel; passwd --status bonvel; sudo -l -U bonvel"),
+        ("SSH desligado", "! systemctl is-active --quiet sshd && echo parado; ! systemctl is-enabled --quiet sshd && echo desativado; sshd -T | grep -E '^(permitrootlogin no|passwordauthentication yes)$'"),
+        ("Hyprland a correr como bonvel", "pgrep -a -u \"$(id -u bonvel)\" Hyprland"),
+        ("waybar/mako/swaybg", "pgrep -l -u \"$(id -u bonvel)\" 'waybar|mako|swaybg'"),
         ("scripts executáveis", "ls -l /opt/scripts/ /usr/local/bin/ | grep -v total"),
         ("links dos comandos", "for c in hacked cktor fp IRN post_install scriptT bonvel-tema bonvel-atalhos ubermensch; do command -v $c >/dev/null && test -x $(readlink -f $(command -v $c)) && echo \"ok $c\" || echo \"FALHA $c\"; done"),
-        ("config do root", "test -L /root/.config && echo LINK || echo copia; ls /root/.config/"),
+        ("config do utilizador live", "ls /home/bonvel/.config/; stat -c '%U %n' /home/bonvel/.config/hypr /home/bonvel/.config/omarchy/current/theme"),
         ("skel limpo", "ls -A /etc/skel/.config/; test -e /etc/skel/.config/dconf && echo SUJO || echo limpo"),
-        ("tema atual", "readlink /root/.config/omarchy/current/theme /root/.config/omarchy/current/background; test -f /root/.config/omarchy/current/background && echo fundo-ok"),
+        ("tema atual", "readlink /home/bonvel/.config/omarchy/current/theme /home/bonvel/.config/omarchy/current/background; test -f /home/bonvel/.config/omarchy/current/background && echo fundo-ok"),
         ("sintaxe dos scripts", "for f in /opt/scripts/*.sh /opt/scripts/scriptT /usr/local/bin/bonvel-*; do bash -n $f || echo ERRO $f; done; echo verificado"),
-        ("lista de temas", "bonvel-tema --lista"),
+        ("lista de temas", "sudo -u bonvel -H bonvel-tema --lista"),
         ("chaves pacman", "systemctl is-active pacman-init; pacman-key --list-keys F9A6E68A711354D84A9B91637533BAFE69A25079 | head -2"),
         ("repo blackarch", "pacman -Sy >/dev/null 2>&1; echo sync=$?; echo pacotes_blackarch=$(pacman -Sl blackarch 2>/dev/null | wc -l)"),
         ("rede", "ip -br a; ping -c1 -W3 archlinux.org | tail -2"),
         ("ferramentas", "for b in Hyprland foot ghostty waybar wofi mako firefox nmap hydra msfconsole sqlmap john aircrack-ng tshark tor torsocks feh lolcat mpv python3 hyprlock hypridle swaybg grim wpctl; do command -v $b >/dev/null || echo FALTA $b; done; echo verificado"),
-        ("erros do Hyprland", "f=$(ls -t /run/user/0/hypr/*/hyprland.log 2>/dev/null | head -1); echo log=$f; grep -iE 'error|fail' $f | grep -v 'no error' | head -20"),
+        ("erros do Hyprland", "f=$(ls -t /run/user/$(id -u bonvel)/hypr/*/hyprland.log 2>/dev/null | head -1); echo log=$f; grep -iE 'error|fail' $f | grep -v 'no error' | head -20"),
         ("pacotes desktop", "grep -vcE '^\\s*(#|$)' /usr/share/bonvel/pacotes-desktop.txt; cat /etc/profile.d/bonvel-hyprland.sh | head -3"),
         ("motd", "head -3 /etc/motd"),
         ("os-release", "grep PRETTY_NAME /etc/os-release"),
         ("config do foot", "foot --check-config && echo foot-ok"),
         ("config do Ghostty", "ghostty +validate-config --config-file=/etc/skel/.config/ghostty/config && echo ghostty-ok"),
-        ("arranque do Hyprland", "pgrep -a start-hyprland; f=$(ls -t /run/user/0/hypr/*/hyprland.log | head -1); grep -ci 'without start-hyprland' $f"),
+        ("arranque do Hyprland", "pgrep -a -u \"$(id -u bonvel)\" start-hyprland; f=$(ls -t /run/user/$(id -u bonvel)/hypr/*/hyprland.log | head -1); grep -ci 'without start-hyprland' $f"),
         ("cow_spacesize", "grep -o 'cow_spacesize=[^ ]*' /proc/cmdline"),
         ("tamanho", "df -h /run/archiso/airootfs / 2>/dev/null | tail -2"),
     ]
@@ -214,10 +236,14 @@ try:
                 rel.write(bloco)
 
     # Testa a troca de tema dentro do Hyprland e tira outra captura
-    cmd("export HYPRLAND_INSTANCE_SIGNATURE=$(ls /run/user/0/hypr/ | head -1) XDG_RUNTIME_DIR=/run/user/0 WAYLAND_DISPLAY=wayland-1; bonvel-tema LainOm", 60)
+    live_env = ("LIVE_UID=$(id -u bonvel); LIVE_RUNTIME=/run/user/$LIVE_UID; "
+                "LIVE_HYPR=$(find \"$LIVE_RUNTIME/hypr\" -mindepth 1 -maxdepth 1 -type d -printf '%f\\n' | head -1); "
+                "asbonvel(){ sudo -u bonvel -H env XDG_RUNTIME_DIR=\"$LIVE_RUNTIME\" "
+                "HYPRLAND_INSTANCE_SIGNATURE=\"$LIVE_HYPR\" WAYLAND_DISPLAY=wayland-1 \"$@\"; }; ")
+    cmd(live_env + "asbonvel bonvel-tema LainOm", 60)
     time.sleep(5)
     captura("02-tema-lainom")
-    cmd("bonvel-tema snow_black; setsid -f foot >/dev/null 2>&1", 60)
+    cmd(live_env + "asbonvel bonvel-tema snow_black; asbonvel setsid -f foot >/dev/null 2>&1", 60)
     time.sleep(5)
     captura("03-terminal")
 
@@ -227,8 +253,8 @@ try:
              "hyprctl getoption animations:enabled | head -1; makoctl mode; "
              "cat ~/.local/state/bonvel/ubermensch/ghostty.conf 2>/dev/null || echo sem-relampagos")
     uber = [
-        ("übermensch: ligar", "ubermensch >/dev/null; echo rc=$?; setsid -f ghostty >/dev/null 2>&1; " + verif),
-        ("übermensch: desligar", "ubermensch off; " + verif),
+        ("übermensch: ligar", "asbonvel bash -c 'ubermensch >/dev/null; echo rc=$?; setsid -f ghostty >/dev/null 2>&1; " + verif + "'"),
+        ("übermensch: desligar", "asbonvel bash -c 'ubermensch off; " + verif + "'"),
     ]
     with open(f"{OUT}/relatorio.txt", "a") as rel:
         for i, (nome, c) in enumerate(uber):

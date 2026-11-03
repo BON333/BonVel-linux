@@ -1,6 +1,6 @@
 #!/bin/bash
 # Instala o BonVel OS no disco num só comando: rede, archinstall e post_install.
-# Corre no sistema ao vivo (ISO), como root.
+# Corre no sistema ao vivo (ISO); pede privilégios com sudo quando necessário.
 # Uso: bonvel-instalar [--sem-archinstall]
 #   --sem-archinstall  o archinstall já correu (por exemplo, reiniciaste antes do post_install):
 #                      monta o sistema instalado e só instala o BonVel
@@ -19,7 +19,10 @@ case "${1:-}" in
     *) erro "opção desconhecida: $1 (uso: bonvel-instalar [--sem-archinstall])" ;;
 esac
 
-[ "$(id -u)" -eq 0 ] || erro "corre como root (no sistema ao vivo já és root)."
+if [ "$(id -u)" -ne 0 ]; then
+    command -v sudo >/dev/null || erro "sudo não está instalado."
+    exec sudo -- "$0" "$@"
+fi
 [ -d /run/archiso ] || erro "isto só funciona no sistema ao vivo do BonVel."
 
 # 1. Rede: o archinstall e o post_install descarregam os pacotes

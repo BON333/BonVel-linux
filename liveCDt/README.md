@@ -31,6 +31,8 @@ No sistema ao vivo, corre `bonvel-instalar`. Ele trata de tudo por ordem:
 
 Se reiniciaste antes do passo 3, arranca de novo a ISO e corre `bonvel-instalar --sem-archinstall`: ele encontra o sistema no disco, monta-o e instala o BonVel. Os passos à mão continuam a funcionar (`archinstall`, depois `post_install` antes de reiniciar).
 
+Na ISO, o ambiente gráfico entra como `bonvel`, um utilizador normal. No primeiro arranque, define uma palavra-passe para a sessão; `sudo` pede essa palavra-passe e o bloqueio automático de ecrã pode ser usado. O SSH fica desligado por omissão; para o iniciar manualmente, usa `sudo systemctl start sshd`. O login remoto de root está bloqueado.
+
 ## Atalhos principais
 
 | Atalho | Ação |
