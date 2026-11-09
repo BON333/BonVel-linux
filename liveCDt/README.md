@@ -1,5 +1,7 @@
 # BonVel OS
 
+[Português](README.md) | [English](README.en.md)
+
 Distribuição Linux baseada em Arch Linux, construída com [archiso](https://wiki.archlinux.org/title/Archiso).
 Arranca num ambiente Hyprland com o tema snow_black e traz ferramentas de segurança (metasploit, hydra, sqlmap, john, aircrack-ng, wireshark-cli, nmap).
 

@@ -1,5 +1,7 @@
 # BonVel Linux
 
+[Português](README.md) | [English](README.en.md)
+
 Distribuição Linux baseada em Arch Linux, feita com [archiso](https://wiki.archlinux.org/title/Archiso).
 Arranca direto num ambiente Hyprland já configurado, com temas, atalhos prontos e ferramentas de segurança incluídas.
 
