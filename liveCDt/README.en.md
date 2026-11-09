@@ -53,7 +53,7 @@ In the ISO, the desktop runs as `bonvel`, a regular user. On first boot, set a p
 
 | Command | Description |
 |---|---|
-| `bonvel-tema [name]` | Switch theme (snow_black, LainOm, greek-noir, gruvu, latchdark; creators in the [credits](../README.en.md#theme-credits)) |
+| `bonvel-tema [name]` | Switch theme (snow_black, LainOm, greek-noir, gruvu, latchdark; creators in the [credits](../README.md#theme-credits)) |
 | `bonvel-atalhos` | List Hyprland shortcuts |
 | `bonvel-instalar` | Install BonVel to disk (live system only) |
 | `bonvel-boas-vindas` | Welcome screen with the main shortcuts (opens automatically on first boot) |

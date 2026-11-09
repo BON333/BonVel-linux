@@ -53,7 +53,7 @@ Na ISO, o ambiente gráfico entra como `bonvel`, um utilizador normal. No primei
 
 | Comando | O que faz |
 |---|---|
-| `bonvel-tema [nome]` | Troca o tema (snow_black, LainOm, greek-noir, gruvu, latchdark; criadores nos [créditos](../README.md#créditos-dos-temas)) |
+| `bonvel-tema [nome]` | Troca o tema (snow_black, LainOm, greek-noir, gruvu, latchdark; criadores nos [créditos](../README.pt.md#créditos-dos-temas)) |
 | `bonvel-atalhos` | Lista os atalhos do Hyprland |
 | `bonvel-instalar` | Instala o BonVel no disco (só no sistema ao vivo) |
 | `bonvel-boas-vindas` | Ecrã de boas-vindas com os atalhos principais (abre sozinho no primeiro arranque) |
